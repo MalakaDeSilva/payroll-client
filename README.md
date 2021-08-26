@@ -16,8 +16,8 @@ You will also see any lint errors in the console.
 
 # Important
 
-## Add new features
-> Create a new branch from "dev"
-> Merge it to dev once the implementation is done.
-> Delete the feature branch
+## Adding new features
+* Create a new branch from "_dev_"
+* Once the implementation is done merge "_feature branch_" to "_dev_".
+* Delete the feature branch
 
