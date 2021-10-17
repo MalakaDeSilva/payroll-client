@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import { createStore, StoreProvider } from "easy-peasy";
+import "./App.css";
+
+import Employee from "./components/Employee";
+import Store from "./Store";
+import SideBar from "./common/SideBar";
+
+const store = createStore(Store);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StoreProvider store={store}>
+      <div className="App">
+        <SideBar content={<Employee />}></SideBar>
+      </div>
+    </StoreProvider>
   );
 }
 
