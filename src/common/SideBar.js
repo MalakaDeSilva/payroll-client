@@ -32,9 +32,11 @@ function SideBar(props) {
             <Menu.Item key="2" icon={<DesktopOutlined />}>
               Option 2
             </Menu.Item>
-            <Menu.Item key="3" icon={<UserOutlined />}>
-              Employees
-            </Menu.Item>
+            <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
+              <Menu.Item key="3">Users</Menu.Item>
+              <Menu.Item key="4">Employees</Menu.Item>
+              <Menu.Item key="5">Accounts</Menu.Item>
+            </SubMenu>
             <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
               <Menu.Item key="6">Team 1</Menu.Item>
               <Menu.Item key="8">Team 2</Menu.Item>
@@ -44,7 +46,7 @@ function SideBar(props) {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout className="site-layout">
+        <Layout style={{ minHeight: "100vh" }}>
           <Content>{content}</Content>
         </Layout>
       </Layout>

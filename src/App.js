@@ -2,10 +2,10 @@ import { createStore, StoreProvider } from "easy-peasy";
 import "./App.css";
 
 import Employee from "./components/Employee";
-import Store from "./Store";
+import EmployeeStore from "./EmployeeStore";
 import SideBar from "./common/SideBar";
 
-const store = createStore(Store);
+const store = createStore(EmployeeStore);
 
 function App() {
   return (

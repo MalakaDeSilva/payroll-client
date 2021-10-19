@@ -1,7 +1,7 @@
 import { action, thunk } from "easy-peasy";
-import { getEmployeeData } from "./services/employeeService";
+import { getEmployeeData, addEmployeeData } from "./services/employeeService";
 
-export default {
+const EmployeeStore = {
   /* states */
   isLoading: false,
   employees: [],
@@ -31,4 +31,17 @@ export default {
 
     action.setIsLoadingAction();
   }),
+  addEmployeeThunk: thunk(async (action) => {
+    action.setIsLoadingAction();
+
+    try {
+      let res = await addEmployeeData();
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsLoadingAction();
+  }),
 };
+
+export default EmployeeStore;

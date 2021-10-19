@@ -1,10 +1,13 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Table, Space, Card } from "antd";
-import React, { useEffect } from "react";
+import { Table, Space, Card, Spin, Tooltip, Button } from "antd";
+import { LoadingOutlined, UserAddOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import NewEmployee from "./newEmployee";
 
 function Employee(props) {
   const { employees, isLoading } = useStoreState((state) => state);
   const { getEmployeesThunk } = useStoreActions((actions) => actions);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     getEmployeesThunk(); // eslint-disable-next-line
@@ -43,29 +46,48 @@ function Employee(props) {
     },
   ];
 
+  const getData = () => {
+    let _employees = [];
+    employees.forEach((employee) => {
+      employee["key"] = employee._id;
+      _employees.push(employee);
+    });
+
+    return _employees;
+  };
+
   const getDesignation = (code) => {
     if (code === "1") return "CEO";
     else if (code === "2") return "Designer";
     else if (code === "3") return "Logo Designer";
   };
 
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
   return (
     <div>
-      {isLoading ? (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
-        >
-          <span className="sr-only">Loading...</span>
-        </div>
-      ) : (
-        <Card title="Employees">
-          <Table columns={columns} dataSource={employees} />
-        </Card>
-      )}
+      <NewEmployee visible={visible} onClose={() => setVisible(!visible)} />
+      <Card
+        title="Employees"
+        style={{ margin: "20px", borderRadius: "15px" }}
+        extra={
+          <Tooltip title="New employee">
+            <Button
+              type="primary"
+              icon={<UserAddOutlined />}
+              onClick={() => setVisible(!visible)}
+            >
+              New employee
+            </Button>
+          </Tooltip>
+        }
+      >
+        {isLoading ? (
+          <Spin indicator={antIcon} />
+        ) : (
+          <Table columns={columns} dataSource={getData()} />
+        )}
+      </Card>
     </div>
   );
 }
