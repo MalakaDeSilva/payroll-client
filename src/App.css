@@ -2,13 +2,14 @@
 
 .footer {
   padding: 24px 50px;
-  color: #d4cdd4;
+  color: #00FFFF;
   font-size: 14px;
   background: #20044d;
   position: absolute;
   height: 25px;
   bottom: 0;
   width: 100%;
+  
 }
 
 .footerImageContainer {
