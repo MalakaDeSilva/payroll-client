@@ -1,7 +1,13 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { Table, Space, Card, Spin, Tooltip, Button } from "antd";
-import { LoadingOutlined, UserAddOutlined } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
+import {
+  LoadingOutlined,
+  UserAddOutlined,
+  EditOutlined,
+  UserDeleteOutlined,
+} from "@ant-design/icons";
+import React, { useEffect } from "react";
+
 import NewEmployee from "./newEmployee";
 
 function Employee(props) {
@@ -41,9 +47,15 @@ function Employee(props) {
       title: "Designation",
       dataIndex: "employeeType",
       key: "employeeType",
-      render: (data) => (
+      render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record) => (
         <Space size="middle">
-          <b>{getDesignation(data)}</b>
+          {<EditOutlined />}
+          {<UserDeleteOutlined />}
         </Space>
       ),
     },
