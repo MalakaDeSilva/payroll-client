@@ -71,6 +71,10 @@ function Employee(props) {
     return _employees;
   };
 
+  const toggleDrawer = () => {
+    actionDrawer();
+  };
+
   const getDesignation = (code) => {
     if (code === "1") return "CEO";
     else if (code === "2") return "Designer";
@@ -81,7 +85,7 @@ function Employee(props) {
 
   return (
     <div>
-      <NewEmployee visible={visible} onClose={() => setVisible(!visible)} />
+      <NewEmployee visible={drawerVisible} onClose={toggleDrawer} />
       <Card
         title="Employees"
         style={{ margin: "20px", borderRadius: "15px" }}
@@ -90,7 +94,7 @@ function Employee(props) {
             <Button
               type="primary"
               icon={<UserAddOutlined />}
-              onClick={() => setVisible(!visible)}
+              onClick={toggleDrawer}
             >
               New employee
             </Button>
