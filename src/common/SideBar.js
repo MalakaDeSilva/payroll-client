@@ -1,18 +1,13 @@
 import { Layout, Menu } from "antd";
-import {
-  DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { FileOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+
+import Employee from "../components/Employee";
 
 function SideBar(props) {
   const { Content, Sider } = Layout;
   const { SubMenu } = Menu;
-
-  const { content } = props;
 
   const [collapsed, setCollapsed] = useState(false);
 
@@ -21,20 +16,17 @@ function SideBar(props) {
   };
 
   return (
-    <div>
+    <BrowserRouter>
       <Layout style={{ minHeight: "100vh" }}>
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={["3"]} mode="inline">
-            <Menu.Item key="1" icon={<PieChartOutlined />}>
-              Option 1
-            </Menu.Item>
-            <Menu.Item key="2" icon={<DesktopOutlined />}>
-              Option 2
-            </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
               <Menu.Item key="3">Users</Menu.Item>
-              <Menu.Item key="4">Employees</Menu.Item>
+              <Menu.Item key="4">
+                <Link to="employee">Employees</Link>
+              </Menu.Item>
+
               <Menu.Item key="5">Accounts</Menu.Item>
             </SubMenu>
             <SubMenu key="sub2" icon={<TeamOutlined />} title="Team">
@@ -47,10 +39,14 @@ function SideBar(props) {
           </Menu>
         </Sider>
         <Layout style={{ minHeight: "100vh" }}>
-          <Content>{content}</Content>
+          <Content>
+            <Routes>
+              <Route path="employee" element={<Employee />} />
+            </Routes>
+          </Content>
         </Layout>
       </Layout>
-    </div>
+    </BrowserRouter>
   );
 }
 
