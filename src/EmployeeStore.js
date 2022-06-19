@@ -6,6 +6,7 @@ const EmployeeStore = {
   isLoading: false,
   employees: [],
   error: "",
+  drawerVisible: false,
 
   /* actions */
   setIsLoadingAction: action((state) => {
@@ -16,6 +17,9 @@ const EmployeeStore = {
   }),
   setEmployeesAction: action((state, employees) => {
     state.employees = employees;
+  }),
+  actionDrawer: action((state) => {
+    state.drawerVisible = !state.drawerVisible;
   }),
 
   /* thunks */
@@ -31,11 +35,11 @@ const EmployeeStore = {
 
     action.setIsLoadingAction();
   }),
-  addEmployeeThunk: thunk(async (action) => {
+  addEmployeeThunk: thunk(async (action, data) => {
     action.setIsLoadingAction();
 
     try {
-      let res = await addEmployeeData();
+      await addEmployeeData(data);
     } catch (e) {
       action.setErrorAction(e.message);
     }
