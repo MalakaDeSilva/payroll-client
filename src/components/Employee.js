@@ -5,9 +5,12 @@ import React, { useEffect, useState } from "react";
 import NewEmployee from "./newEmployee";
 
 function Employee(props) {
-  const { employees, isLoading } = useStoreState((state) => state);
-  const { getEmployeesThunk } = useStoreActions((actions) => actions);
-  const [visible, setVisible] = useState(false);
+  const { employees, isLoading, drawerVisible } = useStoreState(
+    (state) => state
+  );
+  const { getEmployeesThunk, actionDrawer } = useStoreActions(
+    (actions) => actions
+  );
 
   useEffect(() => {
     getEmployeesThunk(); // eslint-disable-next-line
