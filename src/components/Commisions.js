@@ -18,7 +18,7 @@ function Commisions() {
       <TabPane tab="Fixed Commissions" key="1">
         <FixedCommissions />
       </TabPane>
-      <TabPane tab="Per Unit Commission" key="2">
+      <TabPane tab="Per Unit Commissions" key="2">
         <PerUnitCommissions />
       </TabPane>
     </Tabs>
