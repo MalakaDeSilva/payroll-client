@@ -1,5 +1,5 @@
 import { action, thunk } from "easy-peasy";
-import { getEmployeeData, addEmployeeData } from "./services/EmployeeService";
+import { getEmployeeData, addEmployeeData } from "./services/employeeService";
 
 const EmployeeStore = {
   /* states */

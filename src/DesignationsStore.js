@@ -2,7 +2,7 @@ import { action, thunk } from "easy-peasy";
 import {
   getDesignationsData,
   addDesignationsData,
-} from "./services/DesignationsService";
+} from "./services/designationsService";
 
 const DesignationsStore = {
   /* states */
