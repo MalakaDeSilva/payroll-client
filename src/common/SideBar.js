@@ -29,6 +29,9 @@ function SideBar(props) {
               <Menu.Item key="5">
                 <Link to="commissions">Commisions</Link>
               </Menu.Item>
+              <Menu.Item key="3">
+                <Link to="add-ons">Add Ons</Link>
+              </Menu.Item>
             </SubMenu>
             <Menu.Item key="9" icon={<FileOutlined />}>
               Files
@@ -40,6 +43,7 @@ function SideBar(props) {
             <Routes>
               <Route path="employee" element={<Employee />} />
               <Route path="commissions" element={<Commisions />} />
+              <Route path="add-ons" element={<AddOns />} />
             </Routes>
           </Content>
         </Layout>
