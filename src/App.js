@@ -7,6 +7,7 @@ import EmployeeStore from "./EmployeeStore";
 import FixedCommissionsStore from "./FixedCommissionsStore";
 import PerUnitCommissionsStore from "./PerUnitCommissionsStore";
 import DesignationsStore from "./DesignationsStore";
+import AddOnsStore from "./AddOnsStore";
 
 import SideBar from "./common/SideBar";
 
