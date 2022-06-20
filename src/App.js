@@ -1,8 +1,6 @@
 import { createStore, StoreProvider } from "easy-peasy";
 import "./App.css";
 
-import Employee from "./components/Employee";
-
 import EmployeeStore from "./EmployeeStore";
 import FixedCommissionsStore from "./FixedCommissionsStore";
 import PerUnitCommissionsStore from "./PerUnitCommissionsStore";
