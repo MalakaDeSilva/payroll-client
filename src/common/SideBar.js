@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import Employee from "../components/Employee";
 import Commisions from "../components/Commisions";
+import AddOns from "../components/AddOns";
 
 function SideBar(props) {
   const { Content, Sider } = Layout;
@@ -23,17 +24,17 @@ function SideBar(props) {
           <div className="logo" />
           <Menu theme="dark" defaultSelectedKeys={["3"]} mode="inline">
             <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
-              <Menu.Item key="4">
+              <Menu.Item key="1">
                 <Link to="employee">Employees</Link>
               </Menu.Item>
-              <Menu.Item key="5">
+              <Menu.Item key="2">
                 <Link to="commissions">Commisions</Link>
               </Menu.Item>
               <Menu.Item key="3">
                 <Link to="add-ons">Add Ons</Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="9" icon={<FileOutlined />}>
+            <Menu.Item key="4" icon={<FileOutlined />}>
               Files
             </Menu.Item>
           </Menu>
