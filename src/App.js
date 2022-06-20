@@ -25,7 +25,7 @@ function App() {
   return (
     <StoreProvider store={store}>
       <div className="App">
-        <SideBar content={<Employee />}></SideBar>
+        <SideBar></SideBar>
       </div>
     </StoreProvider>
   );
