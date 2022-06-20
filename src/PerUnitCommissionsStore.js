@@ -6,40 +6,52 @@ import {
 
 const PerUnitCommissionsStore = {
   /* states */
-  isLoading: false,
-  commissions: [],
+  isPUComLoading: false,
+  puCommissions: [],
   error: "",
   drawerVisible: false,
 
   /* actions */
-  setIsLoadingAction: action((state) => {
-    state.isLoading = !state.isLoading;
+  setIsComLoadingAction: action((state) => {
+    state.isPUComLoading = !state.isPUComLoading;
   }),
   setErrorAction: action((state, error) => {
     state.error = error;
   }),
-  setCommissionsction: action((state, commissions) => {
-    state.commissions = commissions;
+  setCommissionsAction: action((state, puCommissions) => {
+    state.puCommissions = puCommissions;
   }),
   actionDrawer: action((state) => {
     state.drawerVisible = !state.drawerVisible;
   }),
 
   /* thunks */
-  getCommissionsThunk: thunk(async (action) => {
-    action.setIsLoadingAction();
+  getCommissionsByUserIdPayCycleThunk: thunk(async (action, _data) => {
+    action.setIsComLoadingAction();
 
     try {
-      let { data } = await getCommissionsData();
-      action.setCommissionsction(data);
+      let { data } = await getCommissionsData(_data);
+      action.setCommissionsAction(data);
     } catch (e) {
       action.setErrorAction(e.message);
     }
 
-    action.setIsLoadingAction();
+    action.setIsComLoadingAction();
+  }),
+  getCommissionsByPayCycleThunk: thunk(async (action, _data) => {
+    action.setIsComLoadingAction();
+    
+    try {
+      let { data } = await getCommissionsData(_data);
+      action.setCommissionsAction(data);
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsComLoadingAction();
   }),
   addCommissionsThunk: thunk(async (action, data) => {
-    action.setIsLoadingAction();
+    action.setIsComLoadingAction();
 
     try {
       await addCommissionsData(data);
@@ -47,7 +59,7 @@ const PerUnitCommissionsStore = {
       action.setErrorAction(e.message);
     }
 
-    action.setIsLoadingAction();
+    action.setIsComLoadingAction();
   }),
 };
 
