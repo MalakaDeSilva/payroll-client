@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Drawer, Form, Col, Row, Input, Select, Button, Space } from "antd";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 function NewEmployee(props) {
   const { visible, onClose } = props;
   // const [open, setOpen] = useState(visible);
   const { Option } = Select;
   const { addEmployeeThunk, getEmployeesThunk, actionDrawer } = useStoreActions(
-    (actions) => actions
+    (actions) => actions.employees
   );
+  const { getDesignationsThunk } = useStoreActions(
+    (actions) => actions.designations
+  );
+
+  const { designations, isDesgLoading } = useStoreState(
+    (state) => state.designations
+  );
+
+  useEffect(() => {
+    getDesignationsThunk(); // eslint-disable-next-line
+  }, []);
 
   const toggleDrawer = () => {
     actionDrawer();
@@ -16,8 +27,22 @@ function NewEmployee(props) {
 
   const onFinish = (values) => {
     addEmployeeThunk(values);
-    getEmployeesThunk();
     toggleDrawer();
+    getEmployeesThunk();
+  };
+
+  const getDesignations = () => {
+    if (isDesgLoading) {
+      return "";
+    } else {
+      return designations.map((value, index) => {
+        return (
+          <Option value={value.designationCode} key={value._id}>
+            {value.designationName}
+          </Option>
+        );
+      });
+    }
   };
 
   return (
@@ -31,13 +56,24 @@ function NewEmployee(props) {
       >
         <Form layout="vertical" onFinish={onFinish} hideRequiredMark>
           <Row gutter={16}>
-            <Col span={24}>
+            <Col span={14}>
               <Form.Item
                 name="name"
                 label="Name"
                 rules={[{ required: true, message: "Please enter name." }]}
               >
                 <Input placeholder="Please enter name" />
+              </Form.Item>
+            </Col>
+            <Col span={10}>
+              <Form.Item
+                name="employeeId"
+                label="Employee Id"
+                rules={[
+                  { required: true, message: "Please enter Employee Id." },
+                ]}
+              >
+                <Input placeholder="Please enter Employee Id" />
               </Form.Item>
             </Col>
           </Row>
@@ -55,14 +91,14 @@ function NewEmployee(props) {
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
-                name="type"
-                label="Employee Type"
-                rules={[{ required: true, message: "Please choose the type" }]}
+                name="designation"
+                label="Designation"
+                rules={[
+                  { required: true, message: "Please choose the Designation" },
+                ]}
               >
-                <Select placeholder="Please choose the type">
-                  <Option value="1">CEO</Option>
-                  <Option value="2">Designer</Option>
-                  <Option value="3">Logo Designer</Option>
+                <Select placeholder="Please choose the Designation">
+                  {getDesignations()}
                 </Select>
               </Form.Item>
             </Col>
