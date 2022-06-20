@@ -1,5 +1,8 @@
 import { action, thunk } from "easy-peasy";
-import { getCommissionsData, addCommissionsData } from "./services/perUnitCommissionsService";
+import {
+  getCommissionsData,
+  addCommissionsData,
+} from "./services/PerUnitCommissionsService";
 
 const PerUnitCommissionsStore = {
   /* states */
