@@ -15,7 +15,8 @@ const globalStore = {
   fixedCommissions: FixedCommissionsStore,
   perUnitCommissions: PerUnitCommissionsStore,
   employees: EmployeeStore,
-  designations: DesignationsStore
+  designations: DesignationsStore,
+  addOns: AddOnsStore,
 };
 
 const store = createStore(globalStore);
