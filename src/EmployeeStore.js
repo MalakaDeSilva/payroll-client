@@ -3,14 +3,14 @@ import { getEmployeeData, addEmployeeData } from "./services/employeeService";
 
 const EmployeeStore = {
   /* states */
-  isLoading: false,
+  isEmpLoading: false,
   employees: [],
   error: "",
   drawerVisible: false,
 
   /* actions */
-  setIsLoadingAction: action((state) => {
-    state.isLoading = !state.isLoading;
+  setIsEmpLoadingAction: action((state) => {
+    state.isEmpLoading = !state.isEmpLoading;
   }),
   setErrorAction: action((state, error) => {
     state.error = error;
@@ -24,7 +24,7 @@ const EmployeeStore = {
 
   /* thunks */
   getEmployeesThunk: thunk(async (action) => {
-    action.setIsLoadingAction();
+    action.setIsEmpLoadingAction();
 
     try {
       let { data } = await getEmployeeData();
@@ -33,10 +33,10 @@ const EmployeeStore = {
       action.setErrorAction(e.message);
     }
 
-    action.setIsLoadingAction();
+    action.setIsEmpLoadingAction();
   }),
   addEmployeeThunk: thunk(async (action, data) => {
-    action.setIsLoadingAction();
+    action.setIsEmpLoadingAction();
 
     try {
       await addEmployeeData(data);
@@ -44,7 +44,7 @@ const EmployeeStore = {
       action.setErrorAction(e.message);
     }
 
-    action.setIsLoadingAction();
+    action.setIsEmpLoadingAction();
   }),
 };
 
