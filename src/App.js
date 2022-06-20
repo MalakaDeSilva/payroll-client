@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { createStore, StoreProvider } from "easy-peasy";
+import "./App.css";
+
+import EmployeeStore from "./EmployeeStore";
+import FixedCommissionsStore from "./FixedCommissionsStore";
+import PerUnitCommissionsStore from "./PerUnitCommissionsStore";
+import DesignationsStore from "./DesignationsStore";
+import AddOnsStore from "./AddOnsStore";
+
+import SideBar from "./common/SideBar";
+
+const globalStore = {
+  fixedCommissions: FixedCommissionsStore,
+  perUnitCommissions: PerUnitCommissionsStore,
+  employees: EmployeeStore,
+  designations: DesignationsStore,
+  addOns: AddOnsStore,
+};
+
+const store = createStore(globalStore);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StoreProvider store={store}>
+      <div className="App">
+        <SideBar></SideBar>
+      </div>
+    </StoreProvider>
   );
 }
 
