@@ -38,9 +38,12 @@ function FixedCommissions(props) {
       key: "payCycle",
     },
     {
-      title: "Amount",
+      title: "Amount (Rs.)",
       dataIndex: "amount",
       key: "amount",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
     },
     {
       title: "Employee",
@@ -68,9 +71,9 @@ function FixedCommissions(props) {
 
   const getData = () => {
     let _commissions = [];
-    commissions.forEach((commissions) => {
-      commissions["key"] = commissions._id;
-      _commissions.push(commissions);
+    commissions.forEach((commission) => {
+      commission["key"] = commission._id;
+      _commissions.push(commission);
     });
 
     return _commissions;
