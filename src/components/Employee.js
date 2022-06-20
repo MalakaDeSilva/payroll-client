@@ -11,14 +11,21 @@ import React, { useEffect } from "react";
 import NewEmployee from "./newEmployee";
 
 function Employee(props) {
-  const { employees, isLoading, drawerVisible } = useStoreState(
-    (state) => state
+  const { employees, isEmpLoading, drawerVisible } = useStoreState(
+    (state) => state.employees
+  );
+  const { designations, isDesgLoading } = useStoreState(
+    (state) => state.designations
   );
   const { getEmployeesThunk, actionDrawer } = useStoreActions(
-    (actions) => actions
+    (actions) => actions.employees
+  );
+  const { getDesignationsThunk } = useStoreActions(
+    (actions) => actions.designations
   );
 
   useEffect(() => {
+    getDesignationsThunk();
     getEmployeesThunk(); // eslint-disable-next-line
   }, []);
 
@@ -45,8 +52,8 @@ function Employee(props) {
     },
     {
       title: "Designation",
-      dataIndex: "employeeType",
-      key: "employeeType",
+      dataIndex: "designation",
+      key: "designation",
       render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
     },
     {
@@ -76,9 +83,16 @@ function Employee(props) {
   };
 
   const getDesignation = (code) => {
-    if (code === "1") return "CEO";
-    else if (code === "2") return "Designer";
-    else if (code === "3") return "Logo Designer";
+    let desg = "";
+    if (!isDesgLoading) {
+      designations.forEach((value, index) => {
+        if (value["designationCode"] === code) {
+          desg = value["designationName"];
+        }
+      });
+    }
+
+    return desg;
   };
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -101,7 +115,7 @@ function Employee(props) {
           </Tooltip>
         }
       >
-        {isLoading ? (
+        {isEmpLoading ? (
           <Spin indicator={antIcon} />
         ) : (
           <Table columns={columns} dataSource={getData()} />
