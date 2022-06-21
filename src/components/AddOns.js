@@ -47,6 +47,14 @@ function AddOns() {
       key: "fromPayCycle",
     },
     {
+      title: "Increment (Rs.)",
+      dataIndex: "increment",
+      key: "increment",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
+    },
+    {
       title: "Action",
       key: "action",
       render: (text, record) => (
