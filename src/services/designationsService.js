@@ -6,6 +6,10 @@ export async function getDesignationsData() {
   return await axios.get(`${baseURL}/designations/`);
 }
 
+export async function getDesignationByCodeData(code) {
+  return await axios.get(`${baseURL}/designations/${code}`);
+}
+
 export async function addDesignationsData(data) {
   return await axios.post(`${baseURL}/designations/`, data);
 }

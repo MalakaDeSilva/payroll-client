@@ -2,6 +2,7 @@ import { action, thunk } from "easy-peasy";
 import {
   getDesignationsData,
   addDesignationsData,
+  getDesignationByCodeData,
 } from "./services/designationsService";
 
 const DesignationsStore = {
@@ -31,6 +32,18 @@ const DesignationsStore = {
 
     try {
       let { data } = await getDesignationsData();
+      action.setDesignationsAction(data);
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsDesgLoadingAction();
+  }),
+  getDesignationByCodeThunk: thunk(async (action, code) => {
+    action.setIsDesgLoadingAction();
+
+    try {
+      let { data } = await getDesignationByCodeData(code);
       action.setDesignationsAction(data);
     } catch (e) {
       action.setErrorAction(e.message);
