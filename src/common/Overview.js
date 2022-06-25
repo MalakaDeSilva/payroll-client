@@ -3,10 +3,7 @@ import { Image } from "antd";
 
 function Overview() {
   return (
-    <Image
-      width={200}
-      src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-    />
+    <b>Overview</b>
   );
 }
 
