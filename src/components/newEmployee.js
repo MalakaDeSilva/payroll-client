@@ -1,8 +1,23 @@
-import React, { useEffect } from "react";
-import { Drawer, Form, Col, Row, Input, Select, Button, Space } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Drawer,
+  Form,
+  Col,
+  Row,
+  Input,
+  InputNumber,
+  Select,
+  Button,
+  Space,
+} from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
 function NewEmployee(props) {
+  const [payRange, setPayRange] = useState({
+    salFrom: 0,
+    salTo: 0,
+  });
+  const [salaryField, setSalaryField] = useState(true);
   const { visible, onClose } = props;
   // const [open, setOpen] = useState(visible);
   const { Option } = Select;
@@ -41,6 +56,25 @@ function NewEmployee(props) {
             {value.designationName}
           </Option>
         );
+      });
+    }
+  };
+
+  const onDesignationSelected = (code, option) => {
+    setSalaryField(false);
+    if (isDesgLoading) {
+      setPayRange({
+        salFrom: 0,
+        salTo: 0,
+      });
+    } else {
+      designations.forEach((value, index) => {
+        if (value.designationCode === code) {
+          setPayRange({
+            salFrom: value.salaryRange.from,
+            salTo: value.salaryRange.to,
+          });
+        }
       });
     }
   };
@@ -89,7 +123,7 @@ function NewEmployee(props) {
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={24}>
+            <Col span={14}>
               <Form.Item
                 name="designation"
                 label="Designation"
@@ -97,9 +131,27 @@ function NewEmployee(props) {
                   { required: true, message: "Please choose the Designation" },
                 ]}
               >
-                <Select placeholder="Please choose the Designation">
+                <Select
+                  placeholder="Please choose the Designation"
+                  onChange={onDesignationSelected}
+                >
                   {getDesignations()}
                 </Select>
+              </Form.Item>
+            </Col>
+            <Col span={10}>
+              <Form.Item
+                name="salary"
+                label="Salary"
+                rules={[{ required: true, message: "Please enter salary" }]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  max={payRange.salTo}
+                  min={payRange.salFrom}
+                  placeholder="Please enter salary"
+                  disabled={salaryField}
+                />
               </Form.Item>
             </Col>
           </Row>
