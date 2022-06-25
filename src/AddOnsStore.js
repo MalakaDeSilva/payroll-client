@@ -3,6 +3,7 @@ import {
   getAddOnsDataEmpId,
   getAddOnsDataEmpIdPayCycle,
   addAddOnsData,
+  getAddOnsDataPayCycle,
 } from "./services/AddOnsService";
 
 const AddOnsStore = {
@@ -33,6 +34,19 @@ const AddOnsStore = {
 
     try {
       let { data } = await getAddOnsDataEmpId(empId);
+      action.setAddOnsAction(data);
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsAddOnsLoadingAction();
+  }),
+  getAddOnsByPayCycleThunk: thunk(async (action, _data) => {
+    action.setIsAddOnsLoadingAction();
+    let { payCycle } = _data;
+
+    try {
+      let { data } = await getAddOnsDataPayCycle(payCycle);
       action.setAddOnsAction(data);
     } catch (e) {
       action.setErrorAction(e.message);

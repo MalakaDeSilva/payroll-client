@@ -1,84 +1,22 @@
-import React, { useEffect, useState } from "react";
-import {
-  Drawer,
-  Form,
-  Col,
-  Row,
-  Input,
-  InputNumber,
-  Select,
-  Button,
-  Space,
-} from "antd";
+import React, { useEffect } from "react";
+import { Drawer, Form, Col, Row, Input, Select, Button, Space } from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
-function NewEmployee(props) {
-  const [payRange, setPayRange] = useState({
-    salFrom: 0,
-    salTo: 0,
-  });
-  const [salaryField, setSalaryField] = useState(true);
+function NewDesignation(props) {
   const { visible, onClose } = props;
   // const [open, setOpen] = useState(visible);
   const { Option } = Select;
-  const { addEmployeeThunk, getEmployeesThunk, actionDrawer } = useStoreActions(
-    (actions) => actions.employees
-  );
-  const { getDesignationsThunk } = useStoreActions(
+  const { addDesignationThunk, actionDrawer } = useStoreActions(
     (actions) => actions.designations
   );
-
-  const { designations, isDesgLoading } = useStoreState(
-    (state) => state.designations
-  );
-
-  useEffect(() => {
-    getDesignationsThunk(); // eslint-disable-next-line
-  }, []);
-
   const toggleDrawer = () => {
     actionDrawer();
   };
 
   const onFinish = (values) => {
-    addEmployeeThunk(values);
+    addDesignationThunk(values);
     toggleDrawer();
-    getEmployeesThunk();
   };
-
-  const getDesignations = () => {
-    if (isDesgLoading) {
-      return "";
-    } else {
-      return designations.map((value, index) => {
-        return (
-          <Option value={value.designationCode} key={value._id}>
-            {value.designationName}
-          </Option>
-        );
-      });
-    }
-  };
-
-  const onDesignationSelected = (code, option) => {
-    setSalaryField(false);
-    if (isDesgLoading) {
-      setPayRange({
-        salFrom: 0,
-        salTo: 0,
-      });
-    } else {
-      designations.forEach((value, index) => {
-        if (value.designationCode === code) {
-          setPayRange({
-            salFrom: value.salaryRange.from,
-            salTo: value.salaryRange.to,
-          });
-        }
-      });
-    }
-  };
-
   return (
     <div>
       <Drawer
@@ -119,39 +57,6 @@ function NewEmployee(props) {
                 rules={[{ required: true, message: "Please enter email." }]}
               >
                 <Input placeholder="Please enter email" type={"email"} />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={14}>
-              <Form.Item
-                name="designation"
-                label="Designation"
-                rules={[
-                  { required: true, message: "Please choose the Designation" },
-                ]}
-              >
-                <Select
-                  placeholder="Please choose the Designation"
-                  onChange={onDesignationSelected}
-                >
-                  {getDesignations()}
-                </Select>
-              </Form.Item>
-            </Col>
-            <Col span={10}>
-              <Form.Item
-                name="salary"
-                label="Salary"
-                rules={[{ required: true, message: "Please enter salary" }]}
-              >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  max={payRange.salTo}
-                  min={payRange.salFrom}
-                  placeholder="Please enter salary"
-                  disabled={salaryField}
-                />
               </Form.Item>
             </Col>
           </Row>
@@ -197,4 +102,4 @@ function NewEmployee(props) {
   );
 }
 
-export default NewEmployee;
+export default NewDesignation;
