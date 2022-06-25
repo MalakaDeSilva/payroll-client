@@ -41,6 +41,18 @@ function Employee(props) {
       key: "email",
     },
     {
+      title: "Designation",
+      dataIndex: "designation",
+      key: "designation",
+      render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary",
+      render: (data) => <Space size="middle">Rs.{data.toFixed(2)}</Space>
+    },
+    {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
@@ -50,12 +62,7 @@ function Employee(props) {
       dataIndex: "NIC",
       key: "NIC",
     },
-    {
-      title: "Designation",
-      dataIndex: "designation",
-      key: "designation",
-      render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
-    },
+
     {
       title: "Action",
       key: "action",
