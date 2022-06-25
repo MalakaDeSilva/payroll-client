@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 import NewAddOn from "./NewAddOn";
 
 function AddOns() {
-  let data = { empId: "GOLUWA" };
+  let data = { payCycle: "2022JUN" };
   const { employees, isEmpLoading, drawerVisible } = useStoreState(
     (state) => state.employees
   );
@@ -20,11 +20,14 @@ function AddOns() {
     (actions) => actions.employees
   );
   // eslint-disable-next-line
-  const { getAddOnsByEmpIdThunk, getAddOnsByEmpIdPayCycleThunk } =
-    useStoreActions((actions) => actions.addOns);
+  const {
+    getAddOnsByEmpIdThunk,
+    getAddOnsByEmpIdPayCycleThunk,
+    getAddOnsByPayCycleThunk,
+  } = useStoreActions((actions) => actions.addOns);
 
   useEffect(() => {
-    getAddOnsByEmpIdThunk(data);
+    getAddOnsByPayCycleThunk(data);
     getEmployeesThunk(); // eslint-disable-next-line
   }, []);
 
@@ -37,14 +40,14 @@ function AddOns() {
       },
     },
     {
-      title: "Allowance (Rs.)",
-      dataIndex: "fixedAllowance",
-      key: "fixedAllowance",
-    },
-    {
       title: "From Pay Cycle",
       dataIndex: "fromPayCycle",
       key: "fromPayCycle",
+    },
+    {
+      title: "Allowance (Rs.)",
+      dataIndex: "fixedAllowance",
+      key: "fixedAllowance",
     },
     {
       title: "Increment (Rs.)",
@@ -67,7 +70,7 @@ function AddOns() {
   ];
 
   const getEmployeeName = (empId) => {
-    return isEmpLoading
+    return isEmpLoading || employees.length <= 0
       ? ""
       : employees.find((ele) => ele.employeeId === empId).name;
   };
