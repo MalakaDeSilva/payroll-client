@@ -1,11 +1,11 @@
 import { createStore, StoreProvider } from "easy-peasy";
 import "./App.css";
 
-import EmployeeStore from "./EmployeeStore";
-import FixedCommissionsStore from "./FixedCommissionsStore";
-import PerUnitCommissionsStore from "./PerUnitCommissionsStore";
-import DesignationsStore from "./DesignationsStore";
-import AddOnsStore from "./AddOnsStore";
+import EmployeeStore from "./stores/EmployeeStore";
+import FixedCommissionsStore from "./stores/FixedCommissionsStore";
+import PerUnitCommissionsStore from "./stores/PerUnitCommissionsStore";
+import DesignationsStore from "./stores/DesignationsStore";
+import AddOnsStore from "./stores/AddOnsStore";
 
 import SideBar from "./common/SideBar";
 
