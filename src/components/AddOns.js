@@ -12,18 +12,17 @@ import AddUpdateAddOn from "./AddUpdateAddOn";
 
 function AddOns() {
   let data = { payCycle: "2022JUN" };
-  const { employees, isEmpLoading, drawerVisible } = useStoreState(
-    (state) => state.employees
+  const { employees, isEmpLoading } = useStoreState((state) => state.employees);
+  const { addOns, isAddOnsLoading, drawerVisible } = useStoreState(
+    (state) => state.addOns
   );
-  const { addOns, isAddOnsLoading } = useStoreState((state) => state.addOns);
-  const { getEmployeesThunk, actionDrawer } = useStoreActions(
-    (actions) => actions.employees
-  );
+  const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   // eslint-disable-next-line
   const {
     getAddOnsByEmpIdThunk,
     getAddOnsByEmpIdPayCycleThunk,
     getAddOnsByPayCycleThunk,
+    actionDrawer,
   } = useStoreActions((actions) => actions.addOns);
 
   useEffect(() => {
@@ -48,6 +47,9 @@ function AddOns() {
       title: "Allowance (Rs.)",
       dataIndex: "fixedAllowance",
       key: "fixedAllowance",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
     },
     {
       title: "Increment (Rs.)",
