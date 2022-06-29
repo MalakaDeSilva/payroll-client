@@ -68,8 +68,16 @@ function Employee(props) {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          {<EditOutlined />}
-          {<UserDeleteOutlined />}
+          <Button
+            icon={<EditOutlined />}
+            shape="circle"
+            onClick={() => updateEmployee(record)}
+          ></Button>
+          <Button
+            icon={<UserDeleteOutlined />}
+            shape="circle"
+            onClick={() => deleteEmployee(record)}
+          ></Button>
         </Space>
       ),
     },

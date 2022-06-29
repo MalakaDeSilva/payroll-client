@@ -62,8 +62,8 @@ function PerUnitCommissions(props) {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          {<EditOutlined />}
-          {<UserDeleteOutlined />}
+          <Button icon={<EditOutlined />} shape="circle" onClick={() => console.log(record)}></Button>
+          <Button icon={<UserDeleteOutlined />} shape="circle"></Button>
         </Space>
       ),
     },
