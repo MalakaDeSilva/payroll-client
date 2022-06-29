@@ -47,7 +47,7 @@ function PerUnitCommissions(props) {
       dataIndex: "amount",
       key: "amount",
       render: (text, record) => {
-        return <Space size="middle">Rs.{text.toFixed(2)}</Space>;
+        return <Space size="middle">{text.toFixed(2)}</Space>;
       },
     },
     {
