@@ -6,11 +6,13 @@ import {
   EditOutlined,
   UserDeleteOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import AddUpdatePerUnitCommission from "./AddUpdatePerUnitCommission";
 
 function PerUnitCommissions(props) {
+  const [title, setTitle] = useState("New Commission");
+
   let dataPayCycle = { payCycle: "2022JUN" };
 
   const { Option } = Select;
