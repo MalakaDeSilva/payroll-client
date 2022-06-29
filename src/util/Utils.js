@@ -21,3 +21,12 @@ export function getPayCycle() {
   let code = year + monthCodes[d.getMonth()];
   return code;
 }
+
+export function isObjEmpty(obj) {
+  return !(() => {
+    for (const i in obj) {
+      return true;
+    }
+    return false;
+  })();
+}
