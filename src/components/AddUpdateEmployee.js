@@ -12,18 +12,24 @@ import {
 } from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
-function NewEmployee(props) {
+function AddUpdateEmployee(props) {
+  const [form] = Form.useForm();
+  const { Option } = Select;
+
+  const { visible, onClose, title, emp, action } = props;
+
   const [payRange, setPayRange] = useState({
     salFrom: 0,
     salTo: 0,
   });
   const [salaryField, setSalaryField] = useState(true);
-  const { visible, onClose } = props;
-  // const [open, setOpen] = useState(visible);
-  const { Option } = Select;
-  const { addEmployeeThunk, getEmployeesThunk, actionDrawer } = useStoreActions(
-    (actions) => actions.employees
-  );
+  const [employee, setEmployee] = useState({});
+  const {
+    addEmployeeThunk,
+    updateEmployeeThunk,
+    getEmployeesThunk,
+    actionDrawer,
+  } = useStoreActions((actions) => actions.employees);
   const { getDesignationsThunk } = useStoreActions(
     (actions) => actions.designations
   );
@@ -32,16 +38,24 @@ function NewEmployee(props) {
     (state) => state.designations
   );
 
+  //useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
+
   useEffect(() => {
     getDesignationsThunk(); // eslint-disable-next-line
-  }, []);
+  }, [employee]);
 
   const toggleDrawer = () => {
     actionDrawer();
   };
 
   const onFinish = (values) => {
-    addEmployeeThunk(values);
+    if (action === "ADD") {
+      addEmployeeThunk(values);
+    } else if (action === "UPDATE") {
+      values["_id"] = emp["_id"];
+      updateEmployeeThunk(values);
+    }
+
     toggleDrawer();
     getEmployeesThunk();
   };
@@ -79,16 +93,42 @@ function NewEmployee(props) {
     }
   };
 
+  const onVisibilityChange = (visible) => {
+    if (visible) {
+      form.setFieldsValue({
+        name: emp.name,
+        employeeId: emp.employeeId,
+        email: emp.email,
+        designation: emp.designation,
+        salary: parseFloat(emp.salary),
+        phone: emp.phone,
+        nic: emp.NIC,
+      });
+
+      if (typeof emp.salary != "undefined") {
+        setSalaryField(false);
+      }
+    } else {
+      setEmployee({});
+    }
+  };
+
   return (
     <div>
       <Drawer
-        title="New employee"
+        title={title}
         width={600}
         onClose={onClose}
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
+        afterVisibleChange={onVisibilityChange}
       >
-        <Form layout="vertical" onFinish={onFinish} hideRequiredMark>
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          form={form}
+          hideRequiredMark
+        >
           <Row gutter={16}>
             <Col span={14}>
               <Form.Item
@@ -182,7 +222,7 @@ function NewEmployee(props) {
               <Form.Item>
                 <Space>
                   <Button type="primary" htmlType="submit">
-                    Submit
+                    {action === "ADD" ? "Submit" : "Update"}
                   </Button>
                   <Button htmlType="button" onClick={toggleDrawer}>
                     Cancel
@@ -197,4 +237,4 @@ function NewEmployee(props) {
   );
 }
 
-export default NewEmployee;
+export default AddUpdateEmployee;
