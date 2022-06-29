@@ -8,6 +8,8 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
+import AddUpdateDesignation from "./AddUpdateDesignation";
+
 function Designations() {
   const { designations, isDesgLoading, drawerVisible } = useStoreState(
     (state) => state.designations
@@ -70,6 +72,11 @@ function Designations() {
 
   return (
     <div>
+      <AddUpdateDesignation
+        title="New Designation"
+        visible={drawerVisible}
+        onClose={toggleDrawer}
+      />
       <Card
         title="Designations"
         style={{ margin: "20px", borderRadius: "15px" }}

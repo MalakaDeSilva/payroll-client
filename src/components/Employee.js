@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
-import NewEmployee from "./newEmployee";
+import AddUpdateEmployee from "./AddUpdateEmployee";
 
 function Employee(props) {
   const { employees, isEmpLoading, drawerVisible } = useStoreState(
@@ -106,7 +106,13 @@ function Employee(props) {
 
   return (
     <div>
-      <NewEmployee visible={drawerVisible} onClose={toggleDrawer} />
+      <AddUpdateEmployee
+        visible={drawerVisible}
+        title={title}
+        emp={emp}
+        action={action}
+        onClose={toggleDrawer}
+      />
       <Card
         title="Employees"
         style={{ margin: "20px", borderRadius: "15px" }}

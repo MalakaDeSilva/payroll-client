@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
-import NewFixedCommission from "./NewFixedCommission";
+import AddUpdateFixedCommission from "./AddUpdateFixedCommission";
 
 function FixedCommissions(props) {
   let dataPayCycle = { payCycle: "2022JUN" };
@@ -129,7 +129,11 @@ function FixedCommissions(props) {
 
   return (
     <div>
-      <NewFixedCommission visible={drawerVisible} onClose={toggleDrawer} />
+      <AddUpdateFixedCommission
+        title="New Commission"
+        visible={drawerVisible}
+        onClose={toggleDrawer}
+      />
       <Card
         title="Commissions"
         style={{ margin: "20px", borderRadius: "15px" }}

@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 
-import NewAddOn from "./NewAddOn";
+import AddUpdateAddOn from "./AddUpdateAddOn";
 
 function AddOns() {
   let data = { payCycle: "2022JUN" };
@@ -93,7 +93,7 @@ function AddOns() {
 
   return (
     <div>
-      <NewAddOn visible={drawerVisible} onClose={toggleDrawer} />
+      <AddUpdateAddOn visible={drawerVisible} onClose={toggleDrawer} />
       <Card
         title="Add Ons"
         style={{ margin: "20px", borderRadius: "15px" }}
