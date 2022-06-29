@@ -4,7 +4,7 @@ import {
   getAddOnsDataEmpIdPayCycle,
   addAddOnsData,
   getAddOnsDataPayCycle,
-} from "./services/AddOnsService";
+} from "../services/AddOnsService";
 
 const AddOnsStore = {
   /* states */

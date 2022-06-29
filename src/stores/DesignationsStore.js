@@ -3,7 +3,7 @@ import {
   getDesignationsData,
   addDesignationsData,
   getDesignationByCodeData,
-} from "./services/designationsService";
+} from "../services/designationsService";
 
 const DesignationsStore = {
   /* states */

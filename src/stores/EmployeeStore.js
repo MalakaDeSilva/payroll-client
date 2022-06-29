@@ -1,5 +1,10 @@
 import { action, thunk } from "easy-peasy";
-import { getEmployeeData, addEmployeeData } from "./services/employeeService";
+import {
+  getEmployeeData,
+  addEmployeeData,
+  updateEmployeeData,
+  deleteEmployeeData,
+} from "../services/employeeService";
 
 const EmployeeStore = {
   /* states */
@@ -17,6 +22,14 @@ const EmployeeStore = {
   }),
   setEmployeesAction: action((state, employees) => {
     state.employees = employees;
+  }),
+  pushEmployeesAction: action((state, employee) => {
+    state.employees.push(employee);
+  }),
+  popEmployeesAction: action((state, _id) => {
+    state.employees = state.employees.filter(
+      (employee) => employee._id !== _id
+    );
   }),
   actionDrawer: action((state) => {
     state.drawerVisible = !state.drawerVisible;
@@ -40,6 +53,30 @@ const EmployeeStore = {
 
     try {
       await addEmployeeData(data);
+      action.pushEmployeesAction(data); // TODO: check result before pushing
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsEmpLoadingAction();
+  }),
+  updateEmployeeThunk: thunk(async (action, data) => {
+    action.setIsEmpLoadingAction();
+
+    try {
+      await updateEmployeeData(data);
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsEmpLoadingAction();
+  }),
+  deleteEmployeeThunk: thunk(async (action, id) => {
+    action.setIsEmpLoadingAction();
+
+    try {
+      await deleteEmployeeData(id);
+      action.popEmployeesAction(id); // TODO: check result before popping
     } catch (e) {
       action.setErrorAction(e.message);
     }

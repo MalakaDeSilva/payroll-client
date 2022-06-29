@@ -2,7 +2,7 @@ import { action, thunk } from "easy-peasy";
 import {
   getCommissionsData,
   addCommissionsData,
-} from "./services/perUnitCommissionsService";
+} from "../services/perUnitCommissionsService";
 
 const PerUnitCommissionsStore = {
   /* states */
