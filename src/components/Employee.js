@@ -1,25 +1,42 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Table, Space, Card, Spin, Tooltip, Button } from "antd";
+import {
+  Table,
+  Space,
+  Card,
+  Spin,
+  Tooltip,
+  Button,
+  Modal,
+  message,
+  Typography,
+  Divider,
+} from "antd";
 import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
   UserDeleteOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import AddUpdateEmployee from "./AddUpdateEmployee";
 
 function Employee(props) {
+  const [title, setTitle] = useState("New Commission");
+  const [emp, setEmp] = useState({});
+  const [action, setAction] = useState("ADD");
+
+  const { Title, Text } = Typography;
+
   const { employees, isEmpLoading, drawerVisible } = useStoreState(
     (state) => state.employees
   );
   const { designations, isDesgLoading } = useStoreState(
     (state) => state.designations
   );
-  const { getEmployeesThunk, actionDrawer } = useStoreActions(
-    (actions) => actions.employees
-  );
+  const { getEmployeesThunk, deleteEmployeeThunk, actionDrawer } =
+    useStoreActions((actions) => actions.employees);
   const { getDesignationsThunk } = useStoreActions(
     (actions) => actions.designations
   );
@@ -47,10 +64,10 @@ function Employee(props) {
       render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
     },
     {
-      title: "Salary",
+      title: "Salary (Rs.)",
       dataIndex: "salary",
       key: "salary",
-      render: (data) => <Space size="middle">Rs.{data.toFixed(2)}</Space>
+      render: (data) => <Space size="middle">{data.toFixed(2)}</Space>,
     },
     {
       title: "Phone",
@@ -94,6 +111,7 @@ function Employee(props) {
   };
 
   const toggleDrawer = () => {
+    setEmp({});
     actionDrawer();
   };
 
@@ -108,6 +126,57 @@ function Employee(props) {
     }
 
     return desg;
+  };
+
+  const updateEmployee = (emp) => {
+    // useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
+    // setEmployeeAction(emp);
+    setEmp(emp);
+    setAction("UPDATE");
+    setTitle("Update Employee");
+    actionDrawer();
+  };
+
+  const deleteEmployee = (record) => {
+    let modal = Modal.confirm();
+    const closeModal = () => modal.destroy();
+    modal.update({
+      icon: "",
+      title: (
+        <>
+          <Space style={{ width: "100%", justifyContent: "center" }}>
+            <CloseCircleOutlined
+              style={{
+                fontSize: "70px",
+                color: "#eed202",
+                marginBottom: "15px",
+              }}
+            />
+          </Space>
+          <Title level={1} style={{ textAlign: "center", fontWeight: "light" }}>
+            Are you sure?
+          </Title>
+          <Divider />
+        </>
+      ),
+      content: (
+        <>
+          <div style={{ fontSize: "18px" }}>
+            <Text strong>
+              Do you want to delete {record.name} - {record.designation}
+            </Text>
+          </div>
+          <br />
+          <p>Employee record will be deleted from the system.</p>
+        </>
+      ),
+      onOk: () => {
+        deleteEmployeeThunk(record._id);
+        message.success("Employee is removed.", 1.5);
+        closeModal();
+      },
+      onCancel: closeModal,
+    });
   };
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
