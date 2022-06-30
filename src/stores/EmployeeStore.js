@@ -31,6 +31,15 @@ const EmployeeStore = {
       (employee) => employee._id !== _id
     );
   }),
+  updateEmployeeAction: action((state, employee) => {
+    state.employees = state.employees.map((emp) => {
+      if (emp["_id"] === employee["_id"]) {
+        emp = employee;
+      }
+
+      return emp;
+    });
+  }),
   actionDrawer: action((state) => {
     state.drawerVisible = !state.drawerVisible;
   }),
@@ -64,7 +73,8 @@ const EmployeeStore = {
     action.setIsEmpLoadingAction();
 
     try {
-      await updateEmployeeData(data);
+      let result = await updateEmployeeData(data);
+      action.updateEmployeeAction(result["data"]["updatedEmployee"]);
     } catch (e) {
       action.setErrorAction(e.message);
     }
