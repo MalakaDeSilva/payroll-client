@@ -163,7 +163,7 @@ function Employee(props) {
         <>
           <div style={{ fontSize: "18px" }}>
             <Text strong>
-              Do you want to delete {record.name} - {record.designation}
+              Do you want to delete {record.name}
             </Text>
           </div>
           <br />
