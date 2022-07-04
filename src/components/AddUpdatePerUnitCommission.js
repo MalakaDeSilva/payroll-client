@@ -68,7 +68,10 @@ function NewPerUnitCommission(props) {
         name: comm.commissionName,
         employeeId: comm.employeeId,
         amount: comm.amount,
-        payCycle: comm.payCycle,
+        payCycle:
+          comm.payCycle == "" || typeof comm.payCycle == "undefined"
+            ? getPayCycle()
+            : comm.payCycle,
         units: comm.units,
       });
     }

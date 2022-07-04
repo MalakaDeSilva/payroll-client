@@ -64,7 +64,10 @@ function NewAddOn(props) {
     if (visible) {
       form.setFieldsValue({
         employeeId: addOn.employeeId,
-        fromPayCycle: addOn.fromPayCycle,
+        fromPayCycle:
+          addOn.fromPayCycle == "" || typeof addOn.fromPayCycle == "undefined"
+            ? getPayCycle()
+            : addOn.fromPayCycle,
         fixedAllowance: addOn.fixedAllowance,
         increment: addOn.increment,
       });
