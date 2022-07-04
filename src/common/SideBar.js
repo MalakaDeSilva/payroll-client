@@ -42,8 +42,8 @@ function SideBar(props) {
                 <Link to="designations">Designations</Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="6" icon={<FileOutlined />}>
-              Files
+            <Menu.Item key="6" icon={<PayCircleOutlined />}>
+              Salary
             </Menu.Item>
           </Menu>
         </Sider>
