@@ -1,22 +1,39 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Table, Space, Card, Spin, Tooltip, Button } from "antd";
+import {
+  Table,
+  Space,
+  Card,
+  Spin,
+  Tooltip,
+  Button,
+  Typography,
+  Modal,
+  Divider,
+  message,
+} from "antd";
 import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
   UserDeleteOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import AddUpdateDesignation from "./AddUpdateDesignation";
 
 function Designations() {
+  const [title, setTitle] = useState("New Designation");
+  const [desg, setDesg] = useState({});
+  const [action, setAction] = useState("ADD");
+
+  const { Title, Text } = Typography;
+
   const { designations, isDesgLoading, drawerVisible } = useStoreState(
     (state) => state.designations
   );
-  const { getDesignationsThunk, actionDrawer } = useStoreActions(
-    (actions) => actions.designations
-  );
+  const { getDesignationsThunk, deleteDesignationThunk, actionDrawer } =
+    useStoreActions((actions) => actions.designations);
   useEffect(() => {
     getDesignationsThunk(); // eslint-disable-next-line
   }, []);
@@ -47,8 +64,16 @@ function Designations() {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} shape="circle"></Button>
-          <Button icon={<UserDeleteOutlined />} shape="circle"></Button>
+          <Button
+            icon={<EditOutlined />}
+            shape="circle"
+            onClick={() => updateDesignation(record)}
+          ></Button>
+          <Button
+            icon={<UserDeleteOutlined />}
+            shape="circle"
+            onClick={() => deleteDesignation(record)}
+          ></Button>
         </Space>
       ),
     },
@@ -65,7 +90,61 @@ function Designations() {
   };
 
   const toggleDrawer = () => {
+    setDesg({});
+    setAction("ADD");
+    setTitle("New Designation");
     actionDrawer();
+  };
+
+  const updateDesignation = (_desg) => {
+    // useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
+    // setEmployeeAction(emp);
+    setDesg(_desg);
+    setAction("UPDATE");
+    setTitle("Update Designation");
+    actionDrawer();
+  };
+
+  const deleteDesignation = (record) => {
+    let modal = Modal.confirm();
+    const closeModal = () => modal.destroy();
+    modal.update({
+      icon: "",
+      title: (
+        <>
+          <Space style={{ width: "100%", justifyContent: "center" }}>
+            <CloseCircleOutlined
+              style={{
+                fontSize: "70px",
+                color: "#eed202",
+                marginBottom: "15px",
+              }}
+            />
+          </Space>
+          <Title level={1} style={{ textAlign: "center", fontWeight: "light" }}>
+            Are you sure?
+          </Title>
+          <Divider />
+        </>
+      ),
+      content: (
+        <>
+          <div style={{ fontSize: "18px" }}>
+            <Text strong>
+              Do you want to delete the designation {record.dessignationName}?
+            </Text>
+          </div>
+          <br />
+          <p>Designation record will be deleted from the system.</p>
+        </>
+      ),
+      onOk: () => {
+        deleteDesignationThunk(record._id);
+        message.success("Designation is removed.", 1.5);
+        closeModal();
+      },
+      onCancel: closeModal,
+    });
   };
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -73,8 +152,10 @@ function Designations() {
   return (
     <div>
       <AddUpdateDesignation
-        title="New Designation"
         visible={drawerVisible}
+        title={title}
+        desg={desg}
+        action={action}
         onClose={toggleDrawer}
       />
       <Card

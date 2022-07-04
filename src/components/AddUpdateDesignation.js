@@ -1,84 +1,128 @@
 import React, { useEffect } from "react";
-import { Drawer, Form, Col, Row, Input, Select, Button, Space } from "antd";
+import {
+  Drawer,
+  Form,
+  Col,
+  Row,
+  Input,
+  Select,
+  Button,
+  Space,
+  InputNumber,
+} from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
 function NewDesignation(props) {
-  const { visible, onClose } = props;
-  // const [open, setOpen] = useState(visible);
+  const [form] = Form.useForm();
   const { Option } = Select;
-  const { addDesignationThunk, actionDrawer } = useStoreActions(
-    (actions) => actions.designations
-  );
+
+  const { visible, onClose, title, desg, action } = props;
+
+  const { addDesignationThunk, updateDesignationThunk, actionDrawer } =
+    useStoreActions((actions) => actions.designations);
+
   const toggleDrawer = () => {
     actionDrawer();
   };
 
   const onFinish = (values) => {
-    addDesignationThunk(values);
+    if (action === "ADD") {
+      addDesignationThunk(values);
+    } else if (action === "UPDATE") {
+      values["_id"] = desg["_id"];
+      updateDesignationThunk(values);
+    }
+
     toggleDrawer();
   };
+
+  const onVisibilityChange = (visible) => {
+    if (visible) {
+      form.setFieldsValue({
+        name: desg.designationName,
+        code: desg.designationCode,
+        salFrom:
+          typeof desg.salaryRange != "undefined" ? desg.salaryRange.from : 0,
+        salTo: typeof desg.salaryRange != "undefined" ? desg.salaryRange.to : 0,
+      });
+    }
+  };
+
   return (
     <div>
       <Drawer
-        title="New employee"
+        title={title}
         width={600}
         onClose={onClose}
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
+        afterVisibleChange={onVisibilityChange}
       >
-        <Form layout="vertical" onFinish={onFinish} hideRequiredMark>
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          hideRequiredMark
+        >
           <Row gutter={16}>
             <Col span={14}>
               <Form.Item
                 name="name"
-                label="Name"
-                rules={[{ required: true, message: "Please enter name." }]}
+                label="Designation Name"
+                rules={[
+                  { required: true, message: "Please enter Designation Name." },
+                ]}
               >
-                <Input placeholder="Please enter name" />
+                <Input placeholder="Please enter Designation Name" />
               </Form.Item>
             </Col>
             <Col span={10}>
               <Form.Item
-                name="employeeId"
-                label="Employee Id"
+                name="code"
+                label="Designation Code"
                 rules={[
-                  { required: true, message: "Please enter Employee Id." },
+                  { required: true, message: "Please enter Designation Code." },
                 ]}
               >
-                <Input placeholder="Please enter Employee Id" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col span={24}>
-              <Form.Item
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: "Please enter email." }]}
-              >
-                <Input placeholder="Please enter email" type={"email"} />
+                <Input placeholder="Please enter Designation Code" />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item
-                name="phone"
-                label="Phone"
+                name="salFrom"
+                label="From"
                 rules={[
-                  { required: true, message: "Please enter phone number" },
+                  {
+                    required: true,
+                    message: "Please enter salary lower limit.",
+                  },
                 ]}
               >
-                <Input placeholder="Please enter phone number" />
+                <InputNumber
+                  prefix="LKR"
+                  placeholder="Please enter salary lower limit."
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item
-                name="nic"
-                label="NIC"
-                rules={[{ required: true, message: "Please enter NIC" }]}
+                name="salTo"
+                label="To"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter upper salary limit.",
+                  },
+                ]}
               >
-                <Input placeholder="Please enter NIC" />
+                <InputNumber
+                  prefix="LKR"
+                  placeholder="Please enter upper salary limit."
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
           </Row>
