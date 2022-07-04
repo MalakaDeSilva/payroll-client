@@ -13,3 +13,11 @@ export async function getCommissionsData(data) {
 export async function addCommissionsData(data) {
   return await axios.post(`${baseURL}/fixed-commissions/`, data);
 }
+
+export async function updateCommissionsData(data) {
+  return await axios.put(`${baseURL}/fixed-commissions/${data["_id"]}`, data);
+}
+
+export async function deleteCommissionsData(id) {
+  return await axios.delete(`${baseURL}/fixed-commissions/${id}`);
+}
