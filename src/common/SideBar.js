@@ -1,5 +1,9 @@
 import { Layout, Menu } from "antd";
-import { FileOutlined, UserOutlined, HomeOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  HomeOutlined,
+  PayCircleOutlined,
+} from "@ant-design/icons";
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
@@ -24,7 +28,7 @@ function SideBar(props) {
       <Layout style={{ minHeight: "100vh" }}>
         <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
           <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
             <Menu.Item key="1" icon={<HomeOutlined />}>
               <Link to="">Overview</Link>
             </Menu.Item>
