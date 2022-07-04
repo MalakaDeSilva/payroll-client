@@ -112,6 +112,8 @@ function Employee(props) {
 
   const toggleDrawer = () => {
     setEmp({});
+    setAction("ADD");
+    setTitle("New Employee");
     actionDrawer();
   };
 
