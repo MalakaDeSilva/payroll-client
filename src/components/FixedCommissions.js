@@ -40,6 +40,7 @@ function FixedCommissions(props) {
   const {
     getCommissionsByUserIdPayCycleThunk,
     getCommissionsByPayCycleThunk,
+    deleteCommissionsThunk,
     actionDrawer,
   } = useStoreActions((actions) => actions.fixedCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
@@ -79,6 +80,11 @@ function FixedCommissions(props) {
             icon={<EditOutlined />}
             shape="circle"
             onClick={() => updateCommission(record)}
+          ></Button>
+          <Button
+            icon={<UserDeleteOutlined />}
+            shape="circle"
+            onClick={() => deleteCommission(record)}
           ></Button>
         </Space>
       ),
@@ -151,6 +157,49 @@ function FixedCommissions(props) {
     actionDrawer();
   };
 
+  const deleteCommission = (record) => {
+    let modal = Modal.confirm();
+    const closeModal = () => modal.destroy();
+    modal.update({
+      icon: "",
+      title: (
+        <>
+          <Space style={{ width: "100%", justifyContent: "center" }}>
+            <CloseCircleOutlined
+              style={{
+                fontSize: "70px",
+                color: "#eed202",
+                marginBottom: "15px",
+              }}
+            />
+          </Space>
+          <Title level={1} style={{ textAlign: "center", fontWeight: "light" }}>
+            Are you sure?
+          </Title>
+          <Divider />
+        </>
+      ),
+      content: (
+        <>
+          <div style={{ fontSize: "18px" }}>
+            <Text strong>
+              Do you want to delete the commission for{" "}
+              {getEmployeeName(record.employeeId)}?
+            </Text>
+          </div>
+          <br />
+          <p>Commission will be deleted from the system.</p>
+        </>
+      ),
+      onOk: () => {
+        deleteCommissionsThunk(record._id);
+        message.success("Commission is removed.", 1.5);
+        closeModal();
+      },
+      onCancel: closeModal,
+    });
+  };
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const toggleDrawer = () => {
@@ -163,7 +212,6 @@ function FixedCommissions(props) {
   return (
     <div>
       <AddUpdateFixedCommission
-        title="New Commission"
         visible={drawerVisible}
         title={title}
         comm={commission}
