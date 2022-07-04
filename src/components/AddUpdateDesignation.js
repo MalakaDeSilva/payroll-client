@@ -40,8 +40,8 @@ function NewDesignation(props) {
         name: desg.designationName,
         code: desg.designationCode,
         salFrom:
-          typeof desg.salaryRange != "undefined" ? desg.salaryRange.from : 0,
-        salTo: typeof desg.salaryRange != "undefined" ? desg.salaryRange.to : 0,
+          typeof desg.salaryRange !== "undefined" ? desg.salaryRange.from : 0,
+        salTo: typeof desg.salaryRange !== "undefined" ? desg.salaryRange.to : 0,
       });
     }
   };

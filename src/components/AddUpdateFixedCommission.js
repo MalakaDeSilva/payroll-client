@@ -20,7 +20,6 @@ function NewFixedCommission(props) {
   const { visible, onClose, title, comm, action } = props;
 
   const {
-    getCommissionsByPayCycleThunk,
     addCommissionsThunk,
     updateCommissionsThunk,
     actionDrawer,
@@ -69,7 +68,7 @@ function NewFixedCommission(props) {
         employeeId: comm.employeeId,
         amount: comm.amount,
         payCycle:
-          comm.payCycle == "" || typeof comm.payCycle == "undefined"
+          comm.payCycle === "" || typeof comm.payCycle === "undefined"
             ? getPayCycle()
             : comm.payCycle,
       });
