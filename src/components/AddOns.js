@@ -37,8 +37,6 @@ function AddOns() {
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   // eslint-disable-next-line
   const {
-    getAddOnsByEmpIdThunk,
-    getAddOnsByEmpIdPayCycleThunk,
     getAddOnsByPayCycleThunk,
     actionDrawer,
     deleteAddOnThunk,

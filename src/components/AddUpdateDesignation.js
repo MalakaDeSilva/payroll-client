@@ -1,20 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Drawer,
   Form,
   Col,
   Row,
   Input,
-  Select,
   Button,
   Space,
   InputNumber,
 } from "antd";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 
 function NewDesignation(props) {
   const [form] = Form.useForm();
-  const { Option } = Select;
 
   const { visible, onClose, title, desg, action } = props;
 
