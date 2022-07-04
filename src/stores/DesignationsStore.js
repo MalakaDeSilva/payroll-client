@@ -3,7 +3,9 @@ import {
   getDesignationsData,
   addDesignationsData,
   getDesignationByCodeData,
-} from "./services/designationsService";
+  updateDesignationsData,
+  deleteDesignationsData,
+} from "../services/designationsService";
 
 const DesignationsStore = {
   /* states */
@@ -21,6 +23,23 @@ const DesignationsStore = {
   }),
   setDesignationsAction: action((state, designations) => {
     state.designations = designations;
+  }),
+  pushDesignationsAction: action((state, designation) => {
+    state.designations.push(designation);
+  }),
+  popDesignationsAction: action((state, _id) => {
+    state.designations = state.designations.filter(
+      (designation) => designation._id !== _id
+    );
+  }),
+  updateDesignationsAction: action((state, designation) => {
+    state.designations = state.designations.map((_desg) => {
+      if (_desg["_id"] === designation["_id"]) {
+        _desg = designation;
+      }
+
+      return _desg;
+    });
   }),
   actionDrawer: action((state) => {
     state.drawerVisible = !state.drawerVisible;
@@ -55,7 +74,32 @@ const DesignationsStore = {
     action.setIsDesgLoadingAction();
 
     try {
-      await addDesignationsData(data);
+      let result = await addDesignationsData(data);
+      action.pushDesignationsAction(result["data"]["createdDesignation"]);
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsDesgLoadingAction();
+  }),
+  updateDesignationThunk: thunk(async (action, data) => {
+    action.setIsDesgLoadingAction();
+
+    try {
+      let result = await updateDesignationsData(data);
+      action.updateDesignationsAction(result["data"]["updatedDesignation"]);
+    } catch (e) {
+      action.setErrorAction(e.message);
+    }
+
+    action.setIsDesgLoadingAction();
+  }),
+  deleteDesignationThunk: thunk(async (action, id) => {
+    action.setIsDesgLoadingAction();
+
+    try {
+      let result = await deleteDesignationsData(id);
+      action.popDesignationsAction(result["data"]["deletedDesignation"]["_id"]);
     } catch (e) {
       action.setErrorAction(e.message);
     }

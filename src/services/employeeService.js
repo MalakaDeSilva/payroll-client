@@ -9,3 +9,11 @@ export async function getEmployeeData() {
 export async function addEmployeeData(data) {
   return await axios.post(`${baseURL}/employees/`, data);
 }
+
+export async function updateEmployeeData(data) {
+  return await axios.put(`${baseURL}/employees/${data["_id"]}`, data);
+}
+
+export async function deleteEmployeeData(id) {
+  return await axios.delete(`${baseURL}/employees/${id}`);
+}

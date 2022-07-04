@@ -15,10 +15,15 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import { getPayCycle } from "../util/Utils";
 
 function NewPerUnitCommission(props) {
-  const { visible, onClose } = props;
+  const [form] = Form.useForm();
 
-  const { getCommissionsByPayCycleThunk, addCommissionsThunk, actionDrawer } =
-    useStoreActions((actions) => actions.perUnitCommissions);
+  const { visible, onClose, title, comm, action } = props;
+
+  const {
+    addCommissionsThunk,
+    updateCommissionsThunk,
+    actionDrawer,
+  } = useStoreActions((actions) => actions.perUnitCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
 
@@ -33,11 +38,13 @@ function NewPerUnitCommission(props) {
   };
 
   const onFinish = (values) => {
-    addCommissionsThunk(values);
+    if (action === "ADD") {
+      addCommissionsThunk(values);
+    } else if (action === "UPDATE") {
+      values["_id"] = comm["_id"];
+      updateCommissionsThunk(values);
+    }
     toggleDrawer();
-    setTimeout(() => {
-      getCommissionsByPayCycleThunk();
-    }, 5000);
   };
 
   const getEmployeeSeletor = () => {
@@ -54,15 +61,31 @@ function NewPerUnitCommission(props) {
     }
   };
 
+  const onVisibilityChange = (visible) => {
+    if (visible) {
+      form.setFieldsValue({
+        name: comm.commissionName,
+        employeeId: comm.employeeId,
+        amount: comm.amount,
+        payCycle:
+          comm.payCycle === "" || typeof comm.payCycle === "undefined"
+            ? getPayCycle()
+            : comm.payCycle,
+        units: comm.units,
+      });
+    }
+  };
+
   return (
     <Drawer
-      title="New Commission"
+      title={title}
       width={400}
       onClose={onClose}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}
+      afterVisibleChange={onVisibilityChange}
     >
-      <Form layout="vertical" onFinish={onFinish} hideRequiredMark>
+      <Form layout="vertical" onFinish={onFinish} form={form} hideRequiredMark>
         <Row gutter={16}>
           <Col span={24}>
             <Form.Item
@@ -139,7 +162,7 @@ function NewPerUnitCommission(props) {
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  {action === "ADD" ? "Submit" : "Update"}
                 </Button>
                 <Button htmlType="button" onClick={toggleDrawer}>
                   Cancel

@@ -16,10 +16,12 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import { getPayCycle } from "../util/Utils";
 
 function NewAddOn(props) {
-  const { visible, onClose } = props;
-  // const [open, setOpen] = useState(visible);
+  const [form] = Form.useForm();
   const { Option } = Select;
-  const { addAddOnThunk, actionDrawer } = useStoreActions(
+
+  const { visible, onClose, title, addOn, action } = props;
+
+  const { addAddOnThunk, updateAddOnThunk, actionDrawer } = useStoreActions(
     (actions) => actions.addOns
   );
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
@@ -34,7 +36,13 @@ function NewAddOn(props) {
   };
 
   const onFinish = (values) => {
-    addAddOnThunk(values);
+    if (action === "ADD") {
+      addAddOnThunk(values);
+    } else if (action === "UPDATE") {
+      values["_id"] = addOn["_id"];
+      updateAddOnThunk(values);
+    }
+
     toggleDrawer();
   };
 
@@ -52,16 +60,36 @@ function NewAddOn(props) {
     }
   };
 
+  const onVisibilityChange = (visible) => {
+    if (visible) {
+      form.setFieldsValue({
+        employeeId: addOn.employeeId,
+        fromPayCycle:
+          addOn.fromPayCycle === "" || typeof addOn.fromPayCycle === "undefined"
+            ? getPayCycle()
+            : addOn.fromPayCycle,
+        fixedAllowance: addOn.fixedAllowance,
+        increment: addOn.increment,
+      });
+    }
+  };
+
   return (
     <div>
       <Drawer
-        title="New add on"
+        title={title}
         width={600}
         onClose={onClose}
         visible={visible}
         bodyStyle={{ paddingBottom: 80 }}
+        afterVisibleChange={onVisibilityChange}
       >
-        <Form layout="vertical" onFinish={onFinish} hideRequiredMark>
+        <Form
+          layout="vertical"
+          onFinish={onFinish}
+          form={form}
+          hideRequiredMark
+        >
           <Row gutter={16}>
             <Col span={24}>
               <Form.Item
@@ -130,7 +158,7 @@ function NewAddOn(props) {
               <Form.Item>
                 <Space>
                   <Button type="primary" htmlType="submit">
-                    Submit
+                    {action === "ADD" ? "Submit" : "Update"}
                   </Button>
                   <Button htmlType="button" onClick={toggleDrawer}>
                     Cancel

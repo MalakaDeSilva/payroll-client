@@ -1,19 +1,37 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Table, Space, Card, Spin, Tooltip, Button, Select } from "antd";
+import {
+  Table,
+  Space,
+  Card,
+  Spin,
+  Tooltip,
+  Button,
+  Modal,
+  message,
+  Select,
+  Typography,
+  Divider,
+} from "antd";
 import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
   UserDeleteOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import NewPerUnitCommission from "./NewPerUnitCommission";
+import AddUpdatePerUnitCommission from "./AddUpdatePerUnitCommission";
 
 function PerUnitCommissions(props) {
+  const [title, setTitle] = useState("New Commission");
+  const [commission, setCommission] = useState({});
+  const [action, setAction] = useState("ADD");
+
   let dataPayCycle = { payCycle: "2022JUN" };
 
   const { Option } = Select;
+  const { Title, Text } = Typography;
 
   const { puCommissions, isPUComLoading, drawerVisible } = useStoreState(
     (state) => state.perUnitCommissions
@@ -22,6 +40,7 @@ function PerUnitCommissions(props) {
   const {
     getCommissionsByUserIdPayCycleThunk,
     getCommissionsByPayCycleThunk,
+    deleteCommissionsThunk,
     actionDrawer,
   } = useStoreActions((actions) => actions.perUnitCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
@@ -47,7 +66,7 @@ function PerUnitCommissions(props) {
       dataIndex: "amount",
       key: "amount",
       render: (text, record) => {
-        return <Space size="middle">Rs.{text.toFixed(2)}</Space>;
+        return <Space size="middle">{text.toFixed(2)}</Space>;
       },
     },
     {
@@ -62,8 +81,16 @@ function PerUnitCommissions(props) {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          {<EditOutlined />}
-          {<UserDeleteOutlined />}
+          <Button
+            icon={<EditOutlined />}
+            shape="circle"
+            onClick={() => updateCommission(record)}
+          ></Button>
+          <Button
+            icon={<UserDeleteOutlined />}
+            shape="circle"
+            onClick={() => deleteCommission(record)}
+          ></Button>
         </Space>
       ),
     },
@@ -126,15 +153,76 @@ function PerUnitCommissions(props) {
       : employees.find((ele) => ele.employeeId === empId).name;
   };
 
+  const updateCommission = (commission) => {
+    // useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
+    // setEmployeeAction(emp);
+    setCommission(commission);
+    setAction("UPDATE");
+    setTitle("Update Commission");
+    actionDrawer();
+  };
+
+  const deleteCommission = (record) => {
+    let modal = Modal.confirm();
+    const closeModal = () => modal.destroy();
+    modal.update({
+      icon: "",
+      title: (
+        <>
+          <Space style={{ width: "100%", justifyContent: "center" }}>
+            <CloseCircleOutlined
+              style={{
+                fontSize: "70px",
+                color: "#eed202",
+                marginBottom: "15px",
+              }}
+            />
+          </Space>
+          <Title level={1} style={{ textAlign: "center", fontWeight: "light" }}>
+            Are you sure?
+          </Title>
+          <Divider />
+        </>
+      ),
+      content: (
+        <>
+          <div style={{ fontSize: "18px" }}>
+            <Text strong>
+              Do you want to delete the commission for{" "}
+              {getEmployeeName(record.employeeId)}?
+            </Text>
+          </div>
+          <br />
+          <p>Commission will be deleted from the system.</p>
+        </>
+      ),
+      onOk: () => {
+        deleteCommissionsThunk(record._id);
+        message.success("Commission is removed.", 1.5);
+        closeModal();
+      },
+      onCancel: closeModal,
+    });
+  };
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const toggleDrawer = () => {
     actionDrawer();
+    setAction("ADD");
+    setTitle("New Commission");
+    setCommission({});
   };
 
   return (
     <div>
-      <NewPerUnitCommission visible={drawerVisible} onClose={toggleDrawer} />
+      <AddUpdatePerUnitCommission
+        visible={drawerVisible}
+        title={title}
+        comm={commission}
+        action={action}
+        onClose={toggleDrawer}
+      />
       <Card
         title="Commissions"
         style={{ margin: "20px", borderRadius: "15px" }}

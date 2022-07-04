@@ -13,3 +13,11 @@ export async function getDesignationByCodeData(code) {
 export async function addDesignationsData(data) {
   return await axios.post(`${baseURL}/designations/`, data);
 }
+
+export async function updateDesignationsData(data) {
+  return await axios.put(`${baseURL}/designations/${data["_id"]}`, data);
+}
+
+export async function deleteDesignationsData(id) {
+  return await axios.delete(`${baseURL}/designations/${id}`);
+}
