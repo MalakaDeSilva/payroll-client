@@ -160,7 +160,7 @@ function NewPerUnitCommission(props) {
             <Form.Item>
               <Space>
                 <Button type="primary" htmlType="submit">
-                  Submit
+                  {action === "ADD" ? "Submit" : "Update"}
                 </Button>
                 <Button htmlType="button" onClick={toggleDrawer}>
                   Cancel
