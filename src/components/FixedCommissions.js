@@ -1,12 +1,25 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Table, Space, Card, Spin, Tooltip, Button, Select } from "antd";
+import {
+  Table,
+  Space,
+  Card,
+  Spin,
+  Tooltip,
+  Button,
+  Modal,
+  message,
+  Select,
+  Typography,
+  Divider,
+} from "antd";
 import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
   UserDeleteOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import AddUpdateFixedCommission from "./AddUpdateFixedCommission";
 
@@ -18,6 +31,7 @@ function FixedCommissions(props) {
   let dataPayCycle = { payCycle: "2022JUN" };
 
   const { Option } = Select;
+  const { Title, Text } = Typography;
 
   const { commissions, isComLoading, drawerVisible } = useStoreState(
     (state) => state.fixedCommissions
