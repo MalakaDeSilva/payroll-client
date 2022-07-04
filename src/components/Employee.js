@@ -23,7 +23,7 @@ import React, { useEffect, useState } from "react";
 import AddUpdateEmployee from "./AddUpdateEmployee";
 
 function Employee(props) {
-  const [title, setTitle] = useState("New Commission");
+  const [title, setTitle] = useState("New Employee");
   const [emp, setEmp] = useState({});
   const [action, setAction] = useState("ADD");
 
