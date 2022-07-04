@@ -61,8 +61,8 @@ const EmployeeStore = {
     action.setIsEmpLoadingAction();
 
     try {
-      await addEmployeeData(data);
-      action.pushEmployeesAction(data); // TODO: check result before pushing
+      let result = await addEmployeeData(data);
+      action.pushEmployeesAction(result["data"]["createdEmployee"]); // TODO: check result before pushing
     } catch (e) {
       action.setErrorAction(e.message);
     }
