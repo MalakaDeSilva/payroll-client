@@ -11,6 +11,10 @@ import React, { useEffect } from "react";
 import AddUpdateFixedCommission from "./AddUpdateFixedCommission";
 
 function FixedCommissions(props) {
+  const [title, setTitle] = useState("New Commission");
+  const [commission, setCommission] = useState({});
+  const [action, setAction] = useState("ADD");
+
   let dataPayCycle = { payCycle: "2022JUN" };
 
   const { Option } = Select;
@@ -57,8 +61,11 @@ function FixedCommissions(props) {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} shape="circle"></Button>
-          <Button icon={<UserDeleteOutlined />} shape="circle"></Button>
+          <Button
+            icon={<EditOutlined />}
+            shape="circle"
+            onClick={() => updateCommission(record)}
+          ></Button>
         </Space>
       ),
     },
@@ -121,10 +128,22 @@ function FixedCommissions(props) {
       : employees.find((ele) => ele.employeeId === empId).name;
   };
 
+  const updateCommission = (commission) => {
+    // useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
+    // setEmployeeAction(emp);
+    setCommission(commission);
+    setAction("UPDATE");
+    setTitle("Update Commission");
+    actionDrawer();
+  };
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const toggleDrawer = () => {
     actionDrawer();
+    setAction("ADD");
+    setTitle("New Commission");
+    setCommission({});
   };
 
   return (
@@ -132,6 +151,9 @@ function FixedCommissions(props) {
       <AddUpdateFixedCommission
         title="New Commission"
         visible={drawerVisible}
+        title={title}
+        comm={commission}
+        action={action}
         onClose={toggleDrawer}
       />
       <Card
@@ -140,7 +162,7 @@ function FixedCommissions(props) {
         extra={
           <div>
             {getEmployeeSelector()}
-            <Tooltip title="New employee">
+            <Tooltip title="New Commission">
               <Button
                 type="primary"
                 icon={<UserAddOutlined />}

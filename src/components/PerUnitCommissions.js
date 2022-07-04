@@ -12,6 +12,8 @@ import AddUpdatePerUnitCommission from "./AddUpdatePerUnitCommission";
 
 function PerUnitCommissions(props) {
   const [title, setTitle] = useState("New Commission");
+  const [commission, setCommission] = useState({});
+  const [action, setAction] = useState("ADD");
 
   let dataPayCycle = { payCycle: "2022JUN" };
 
@@ -64,8 +66,11 @@ function PerUnitCommissions(props) {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} shape="circle" onClick={() => console.log(record)}></Button>
-          <Button icon={<UserDeleteOutlined />} shape="circle"></Button>
+          <Button
+            icon={<EditOutlined />}
+            shape="circle"
+            onClick={() => updateCommission(record)}
+          ></Button>
         </Space>
       ),
     },
@@ -128,10 +133,22 @@ function PerUnitCommissions(props) {
       : employees.find((ele) => ele.employeeId === empId).name;
   };
 
+  const updateCommission = (commission) => {
+    // useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
+    // setEmployeeAction(emp);
+    setCommission(commission);
+    setAction("UPDATE");
+    setTitle("Update Commission");
+    actionDrawer();
+  };
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   const toggleDrawer = () => {
     actionDrawer();
+    setAction("ADD");
+    setTitle("New Commission");
+    setCommission({});
   };
 
   return (
@@ -139,6 +156,9 @@ function PerUnitCommissions(props) {
       <AddUpdatePerUnitCommission
         title={title}
         visible={drawerVisible}
+        title={title}
+        comm={commission}
+        action={action}
         onClose={toggleDrawer}
       />
       <Card
