@@ -11,9 +11,19 @@ export async function getAddOnsDataPayCycle(payCycle) {
 }
 
 export async function getAddOnsDataEmpIdPayCycle(empId, payCycle) {
-  return await axios.get(`${baseURL}/add-ons/by-emp-pay-cycle/${empId}/${payCycle}`);
+  return await axios.get(
+    `${baseURL}/add-ons/by-emp-pay-cycle/${empId}/${payCycle}`
+  );
 }
 
 export async function addAddOnsData(data) {
   return await axios.post(`${baseURL}/add-ons/`, data);
+}
+
+export async function updateAddOnsData(data) {
+  return await axios.put(`${baseURL}/add-ons/${data["_id"]}`, data);
+}
+
+export async function deleteAddOnsData(id) {
+  return await axios.delete(`${baseURL}/add-ons/${id}`);
 }

@@ -1,16 +1,34 @@
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Table, Space, Card, Spin, Tooltip, Button } from "antd";
+import {
+  Table,
+  Space,
+  Card,
+  Spin,
+  Tooltip,
+  Button,
+  Modal,
+  Typography,
+  Divider,
+  message,
+} from "antd";
 import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
   UserDeleteOutlined,
+  CloseCircleOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import AddUpdateAddOn from "./AddUpdateAddOn";
 
 function AddOns() {
+  const [title, setTitle] = useState("New Add On");
+  const [addOn, setAddOn] = useState({});
+  const [action, setAction] = useState("ADD");
+
+  const { Title, Text } = Typography;
+
   let data = { payCycle: "2022JUN" };
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
   const { addOns, isAddOnsLoading, drawerVisible } = useStoreState(
@@ -23,6 +41,7 @@ function AddOns() {
     getAddOnsByEmpIdPayCycleThunk,
     getAddOnsByPayCycleThunk,
     actionDrawer,
+    deleteAddOnThunk,
   } = useStoreActions((actions) => actions.addOns);
 
   useEffect(() => {
@@ -64,8 +83,16 @@ function AddOns() {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} shape="circle"></Button>
-          <Button icon={<UserDeleteOutlined />} shape="circle"></Button>
+          <Button
+            icon={<EditOutlined />}
+            shape="circle"
+            onClick={() => updateAddOn(record)}
+          ></Button>
+          <Button
+            icon={<UserDeleteOutlined />}
+            shape="circle"
+            onClick={() => deleteAddON(record)}
+          ></Button>
         </Space>
       ),
     },
@@ -88,14 +115,73 @@ function AddOns() {
   };
 
   const toggleDrawer = () => {
+    setAddOn({});
+    setAction("ADD");
+    setTitle("New Add On");
     actionDrawer();
+  };
+
+  const updateAddOn = (_addOn) => {
+    setAddOn(_addOn);
+    setAction("UPDATE");
+    setTitle("Update Add On");
+    actionDrawer();
+  };
+
+  const deleteAddON = (record) => {
+    let modal = Modal.confirm();
+    const closeModal = () => modal.destroy();
+    modal.update({
+      icon: "",
+      title: (
+        <>
+          <Space style={{ width: "100%", justifyContent: "center" }}>
+            <CloseCircleOutlined
+              style={{
+                fontSize: "70px",
+                color: "#eed202",
+                marginBottom: "15px",
+              }}
+            />
+          </Space>
+          <Title level={1} style={{ textAlign: "center", fontWeight: "light" }}>
+            Are you sure?
+          </Title>
+          <Divider />
+        </>
+      ),
+      content: (
+        <>
+          <div style={{ fontSize: "18px" }}>
+            <Text strong>
+              Do you want to delete add on for{" "}
+              {getEmployeeName(record.employeeId)}?
+            </Text>
+          </div>
+          <br />
+          <p>Add On record will be deleted from the system.</p>
+        </>
+      ),
+      onOk: () => {
+        deleteAddOnThunk(record._id);
+        message.success("Add On is removed.", 1.5);
+        closeModal();
+      },
+      onCancel: closeModal,
+    });
   };
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   return (
     <div>
-      <AddUpdateAddOn visible={drawerVisible} onClose={toggleDrawer} />
+      <AddUpdateAddOn
+        visible={drawerVisible}
+        title={title}
+        addOn={addOn}
+        action={action}
+        onClose={toggleDrawer}
+      />
       <Card
         title="Add Ons"
         style={{ margin: "20px", borderRadius: "15px" }}
