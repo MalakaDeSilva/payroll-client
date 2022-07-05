@@ -2,7 +2,7 @@ import { Layout, Menu } from "antd";
 import {
   UserOutlined,
   HomeOutlined,
-  PayCircleOutlined,
+  BankOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -12,6 +12,7 @@ import Commisions from "../components/Commisions";
 import AddOns from "../components/AddOns";
 import Designations from "../components/Designations";
 import Overview from "./Overview";
+import Salaries from "../components/Salaries";
 
 function SideBar(props) {
   const { Content, Sider } = Layout;
@@ -46,8 +47,8 @@ function SideBar(props) {
                 <Link to="designations">Designations</Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="6" icon={<PayCircleOutlined />}>
-              Salary
+            <Menu.Item key="6" icon={<BankOutlined />}>
+              <Link to="salaries">Salary</Link>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -59,6 +60,7 @@ function SideBar(props) {
               <Route path="commissions" element={<Commisions />} />
               <Route path="add-ons" element={<AddOns />} />
               <Route path="designations" element={<Designations />} />
+              <Route path="salaries" element={<Salaries />} />
             </Routes>
           </Content>
         </Layout>
