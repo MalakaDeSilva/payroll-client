@@ -15,7 +15,7 @@ import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
-  UserDeleteOutlined,
+  DeleteOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -87,7 +87,7 @@ function AddOns() {
             onClick={() => updateAddOn(record)}
           ></Button>
           <Button
-            icon={<UserDeleteOutlined />}
+            icon={<DeleteOutlined />}
             shape="circle"
             onClick={() => deleteAddON(record)}
           ></Button>
