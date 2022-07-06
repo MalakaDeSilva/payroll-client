@@ -16,7 +16,7 @@ import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
-  UserDeleteOutlined,
+  DeleteOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -57,7 +57,7 @@ function FixedCommissions(props) {
       key: "payCycle",
     },
     {
-      title: "Amount (Rs.)",
+      title: "Amount (LKR)",
       dataIndex: "amount",
       key: "amount",
       render: (text, record) => {
@@ -82,7 +82,7 @@ function FixedCommissions(props) {
             onClick={() => updateCommission(record)}
           ></Button>
           <Button
-            icon={<UserDeleteOutlined />}
+            icon={<DeleteOutlined />}
             shape="circle"
             onClick={() => deleteCommission(record)}
           ></Button>

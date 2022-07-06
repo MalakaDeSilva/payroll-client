@@ -136,7 +136,6 @@ function NewFixedCommission(props) {
                   Pay Cycle *
                 </Tooltip>
               }
-              rules={[{ required: true, message: "Please enter Pay Cycle" }]}
               initialValue={getPayCycle()}
             >
               <Input placeholder="Please enter Pay Cycle" />

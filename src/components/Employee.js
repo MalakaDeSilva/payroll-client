@@ -64,7 +64,7 @@ function Employee(props) {
       render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
     },
     {
-      title: "Salary (Rs.)",
+      title: "Salary (LKR)",
       dataIndex: "salary",
       key: "salary",
       render: (data) => <Space size="middle">{data.toFixed(2)}</Space>,

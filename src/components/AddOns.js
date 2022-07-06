@@ -15,7 +15,7 @@ import {
   LoadingOutlined,
   UserAddOutlined,
   EditOutlined,
-  UserDeleteOutlined,
+  DeleteOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
@@ -61,7 +61,7 @@ function AddOns() {
       key: "fromPayCycle",
     },
     {
-      title: "Allowance (Rs.)",
+      title: "Allowance (LKR)",
       dataIndex: "fixedAllowance",
       key: "fixedAllowance",
       render: (text, record) => {
@@ -69,7 +69,7 @@ function AddOns() {
       },
     },
     {
-      title: "Increment (Rs.)",
+      title: "Increment (LKR)",
       dataIndex: "increment",
       key: "increment",
       render: (text, record) => {
@@ -87,7 +87,7 @@ function AddOns() {
             onClick={() => updateAddOn(record)}
           ></Button>
           <Button
-            icon={<UserDeleteOutlined />}
+            icon={<DeleteOutlined />}
             shape="circle"
             onClick={() => deleteAddON(record)}
           ></Button>

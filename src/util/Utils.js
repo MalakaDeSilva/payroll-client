@@ -1,6 +1,5 @@
-export function getPayCycle() {
-  let d = new Date();
-
+export function getPayCycle(year = "", month = "") {
+  let code = "";
   const monthCodes = [
     "JAN",
     "FEB",
@@ -15,10 +14,17 @@ export function getPayCycle() {
     "NOV",
     "DEC",
   ];
+  
+  if (year === "" && month === "") {
+    let d = new Date();
 
-  const year = d.getFullYear();
+    const _year = d.getFullYear();
 
-  let code = year + monthCodes[d.getMonth()];
+    code = _year + monthCodes[d.getMonth()];
+  } else {
+    code = year + monthCodes[month];
+  }
+
   return code;
 }
 

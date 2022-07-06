@@ -6,6 +6,7 @@ import FixedCommissionsStore from "./stores/FixedCommissionsStore";
 import PerUnitCommissionsStore from "./stores/PerUnitCommissionsStore";
 import DesignationsStore from "./stores/DesignationsStore";
 import AddOnsStore from "./stores/AddOnsStore";
+import SalaryStore from "./stores/SalaryStore";
 
 import SideBar from "./common/SideBar";
 
@@ -15,6 +16,7 @@ const globalStore = {
   employees: EmployeeStore,
   designations: DesignationsStore,
   addOns: AddOnsStore,
+  salaries: SalaryStore,
 };
 
 const store = createStore(globalStore);
