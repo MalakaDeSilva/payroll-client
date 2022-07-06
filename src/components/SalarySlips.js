@@ -170,7 +170,7 @@ function SalarySlips(props) {
                 <Form.Item>
                   <Space>
                     <Button type="primary" htmlType="submit">
-                      Generate
+                      Select
                     </Button>
                     <Button
                       type="default"
@@ -250,7 +250,7 @@ function SalarySlips(props) {
                 <Form.Item>
                   <Space>
                     <Button type="primary" htmlType="submit">
-                      Generate
+                      Update
                     </Button>
                     <Button
                       type="default"
