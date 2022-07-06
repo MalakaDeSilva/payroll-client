@@ -99,6 +99,7 @@ function AddUpdateEmployee(props) {
         name: emp.name,
         employeeId: emp.employeeId,
         email: emp.email,
+        joinedDate: emp.joinedDate,
         designation: emp.designation,
         salary: parseFloat(emp.salary),
         phone: emp.phone,
@@ -152,13 +153,22 @@ function AddUpdateEmployee(props) {
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={24}>
+            <Col span={14}>
               <Form.Item
                 name="email"
                 label="Email"
                 rules={[{ required: true, message: "Please enter email." }]}
               >
                 <Input placeholder="Please enter email" type={"email"} />
+              </Form.Item>
+            </Col>
+            <Col span={10}>
+              <Form.Item
+                name="joinedDate"
+                label="Joined Date"
+                rules={[{ required: true, message: "Please enter joined date." }]}
+              >
+                <Input placeholder="Please enter joined date" type={"date"} />
               </Form.Item>
             </Col>
           </Row>
