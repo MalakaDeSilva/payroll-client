@@ -12,7 +12,8 @@ import Commisions from "../components/Commisions";
 import AddOns from "../components/AddOns";
 import Designations from "../components/Designations";
 import Overview from "./Overview";
-import Salaries from "../components/Salaries";
+import EmployeeSalary from "../components/EmployeeSalary";
+import SalarySlips from "../components/SalarySlips";
 
 function SideBar(props) {
   const { Content, Sider } = Layout;
@@ -47,9 +48,14 @@ function SideBar(props) {
                 <Link to="designations">Designations</Link>
               </Menu.Item>
             </SubMenu>
-            <Menu.Item key="6" icon={<BankOutlined />}>
-              <Link to="salaries">Salary</Link>
-            </Menu.Item>
+            <SubMenu key="sub2" icon={<BankOutlined />} title="Payroll">
+              <Menu.Item key="6">
+                <Link to="employee-salary">Empoloyee Salary</Link>
+              </Menu.Item>
+              <Menu.Item key="7">
+                <Link to="salary-slips">Payslips</Link>
+              </Menu.Item>
+            </SubMenu>
           </Menu>
         </Sider>
         <Layout style={{ minHeight: "100vh" }}>
@@ -60,7 +66,8 @@ function SideBar(props) {
               <Route path="commissions" element={<Commisions />} />
               <Route path="add-ons" element={<AddOns />} />
               <Route path="designations" element={<Designations />} />
-              <Route path="salaries" element={<Salaries />} />
+              <Route path="employee-salary" element={<EmployeeSalary />} />
+              <Route path="salary-slips" element={<SalarySlips />} />
             </Routes>
           </Content>
         </Layout>
