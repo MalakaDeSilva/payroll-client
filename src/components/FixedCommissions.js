@@ -57,7 +57,7 @@ function FixedCommissions(props) {
       key: "payCycle",
     },
     {
-      title: "Amount (Rs.)",
+      title: "Amount (LKR)",
       dataIndex: "amount",
       key: "amount",
       render: (text, record) => {

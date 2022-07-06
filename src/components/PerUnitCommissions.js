@@ -62,7 +62,7 @@ function PerUnitCommissions(props) {
       key: "units",
     },
     {
-      title: "Amount (Rs.)",
+      title: "Amount (LKR)",
       dataIndex: "amount",
       key: "amount",
       render: (text, record) => {

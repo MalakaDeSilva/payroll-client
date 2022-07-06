@@ -61,7 +61,7 @@ function AddOns() {
       key: "fromPayCycle",
     },
     {
-      title: "Allowance (Rs.)",
+      title: "Allowance (LKR)",
       dataIndex: "fixedAllowance",
       key: "fixedAllowance",
       render: (text, record) => {
@@ -69,7 +69,7 @@ function AddOns() {
       },
     },
     {
-      title: "Increment (Rs.)",
+      title: "Increment (LKR)",
       dataIndex: "increment",
       key: "increment",
       render: (text, record) => {
