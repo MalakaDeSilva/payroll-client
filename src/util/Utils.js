@@ -10,11 +10,11 @@ export function getPayCycle(year = "", month = "") {
     "JUL",
     "AUG",
     "SEP",
-    "OVT",
+    "OCT",
     "NOV",
     "DEC",
   ];
-  
+
   if (year === "" && month === "") {
     let d = new Date();
 
