@@ -51,7 +51,7 @@ function SideBar(props) {
             </SubMenu>
             <SubMenu key="sub2" icon={<BankOutlined />} title="Payroll">
               <Menu.Item key="6">
-                <Link to="/employee-salary">Empoloyee Salary</Link>
+                <Link to="/employee-salary">Employee Salary</Link>
               </Menu.Item>
               <Menu.Item key="7">
                 <Link to="/salary-slips">Payslips</Link>
