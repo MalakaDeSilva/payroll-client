@@ -92,6 +92,19 @@ function SalarySheet(props) {
         style={{ margin: "20px", borderRadius: "15px" }}
       >
         <Row
+          key="org"
+          gutter={{
+            xs: 8,
+            sm: 16,
+            md: 24,
+            lg: 32,
+          }}
+        >
+          <Col span={8} offset={8}>
+            <Title level={1}>Picaroon Pvt. Ltd.</Title> 
+          </Col>
+        </Row>
+        <Row
           key={1}
           gutter={{
             xs: 8,
