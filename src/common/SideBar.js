@@ -14,6 +14,7 @@ import Designations from "../components/Designations";
 import Overview from "./Overview";
 import EmployeeSalary from "../components/EmployeeSalary";
 import SalarySlips from "../components/SalarySlips";
+import SalarySheet from "../components/SalarySheet";
 
 function SideBar(props) {
   const { Content, Sider } = Layout;
@@ -68,6 +69,7 @@ function SideBar(props) {
               <Route path="/designations" element={<Designations />} />
               <Route path="/employee-salary" element={<EmployeeSalary />} />
               <Route exact path="/salary-slips" element={<SalarySlips />} />
+              <Route path="/salary-slips/salary-sheet/:empId/:payCycle" element={<SalarySheet />} />
             </Routes>
           </Content>
         </Layout>
