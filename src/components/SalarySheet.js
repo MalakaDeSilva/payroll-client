@@ -21,13 +21,20 @@ function SalarySheet(props) {
     // eslint-disable-next-line
     (state) => state.salaries
   );
+  const { designations, isDesgLoading } = useStoreState(
+    (state) => state.designations
+  );
 
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   const { getSalariesByEmpIdPayCycleThunk } = useStoreActions(
     (actions) => actions.salaries
   );
+  const { getDesignationsThunk } = useStoreActions(
+    (actions) => actions.designations
+  );
 
   useEffect(() => {
+    getDesignationsThunk();
     getEmployeesThunk();
     getSalariesByEmpIdPayCycleThunk({ empId, payCycle }); // eslint-disable-next-line
   }, []);
@@ -36,6 +43,25 @@ function SalarySheet(props) {
     padding: "8px 0",
     height: "100%",
     fontWeight: 700,
+  };
+
+  const getEmployee = (empId) => {
+    return isEmpLoading || employees.length <= 0
+      ? ""
+      : employees.find((ele) => ele.employeeId === empId);
+  };
+
+  const getDesignation = (code) => {
+    let desg = "";
+    if (!isDesgLoading) {
+      designations.forEach((value, index) => {
+        if (value["designationCode"] === code) {
+          desg = value["designationName"];
+        }
+      });
+    }
+
+    return desg;
   };
 
   return (
@@ -66,7 +92,7 @@ function SalarySheet(props) {
         style={{ margin: "20px", borderRadius: "15px" }}
       >
         <Row
-          key={1}
+          key="org"
           gutter={{
             xs: 8,
             sm: 16,
@@ -74,11 +100,85 @@ function SalarySheet(props) {
             lg: 32,
           }}
         >
-          <Col span={6}>{payCycle}</Col>
-          <Col span={6} offset={12}>
-            {payCycle}
+          <Col span={8} offset={8}>
+            <Title level={1}>Picaroon Pvt. Ltd.</Title> 
           </Col>
         </Row>
+        <Row
+          key={1}
+          gutter={{
+            xs: 8,
+            sm: 16,
+            md: 24,
+            lg: 32,
+          }}
+          
+          style={{marginLeft: "40px"}}
+        >
+          <Col span={6}>
+            <Row
+              key={"sub1"}
+              gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}
+            >
+              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+                {getEmployee(empId).name}
+              </Col>
+            </Row>
+            <Row
+              key={"sub2"}
+              gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}
+            >
+              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+                {getDesignation(getEmployee(empId).designation)}
+              </Col>
+            </Row>
+            <Row
+              key={"sub3"}
+              gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}
+            >
+              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+                {"Employee ID: " + getEmployee(empId).employeeId}
+              </Col>
+            </Row>
+            <Row
+              key={"sub4"}
+              gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}
+            >
+              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+                {"Joining Date: " +
+                  new Date(getEmployee(empId).joinedDate).toLocaleDateString()}
+              </Col>
+            </Row>
+          </Col>
+          <Col
+            span={6}
+            offset={12}
+            style={{ fontWeight: 600, fontSize: "18px" }}
+          >
+            {"Salary Month: " + month + ", " + year}
+          </Col>
+        </Row>
+        <Divider />
         <Row
           key={2}
           gutter={{
@@ -190,7 +290,7 @@ function SalarySheet(props) {
               salaries[0]["fixedCommissions"].map((v, i) => {
                 return (
                   <Row
-                    key={8}
+                    key={i + "8"}
                     gutter={{
                       xs: 8,
                       sm: 16,
@@ -265,7 +365,7 @@ function SalarySheet(props) {
               salaries[0]["perUnitCommissions"].map((v, i) => {
                 return (
                   <Row
-                    key={11}
+                    key={i + "11"}
                     gutter={{
                       xs: 8,
                       sm: 16,
@@ -274,17 +374,20 @@ function SalarySheet(props) {
                     }}
                   >
                     <Col
-                      span={6}
+                      span={5}
                       offset={7}
                       style={{ ...style, textAlign: "left" }}
                     >
-                      a
+                      {v["commissionName"]}
                     </Col>
-                    <Col span={5} style={{ ...style, textAlign: "right" }}>
-                      b
+                    <Col span={2} style={{ ...style, textAlign: "right" }}>
+                      {v["units"]}
+                    </Col>
+                    <Col span={4} style={{ ...style, textAlign: "right" }}>
+                      {"LKR " + v["commission"].toFixed(2)}
                     </Col>
                     <Col span={6} style={{ ...style, textAlign: "right" }}>
-                      c
+                      {"LKR " + v["totalCommission"].toFixed(2)}
                     </Col>
                   </Row>
                 );

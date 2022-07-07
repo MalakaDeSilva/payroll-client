@@ -162,12 +162,12 @@ export function toWords(numberInput) {
   ];
 
   if (numberInput.toString().length > 7) return "overlimit";
-  console.log(numberInput);
+  
   //let num = ('0000000000'+ numberInput).slice(-10).match(/^(\d{1})(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
   let num = ("0000000" + numberInput)
     .slice(-7)
     .match(/^(\d{1})(\d{1})(\d{2})(\d{1})(\d{2})$/);
-  console.log(num);
+    
   if (!num) return;
 
   let outputText =
