@@ -196,6 +196,6 @@ export function toWords(numberInput) {
       ? oneToTwenty[Number(num[5])] ||
         `${tenth[num[5][0]]} ${oneToTwenty[num[5][1]]} `
       : "";
-
+  outputText += " rupees only.";
   return outputText;
 }
