@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Row, Col, Card, Breadcrumb, Typography } from "antd";
+import { Row, Col, Card, Breadcrumb, Typography, Divider } from "antd";
 import { Link, useParams } from "react-router-dom";
 
-import { getMonthYearFromPayCycle } from "../util/Utils";
+import { getMonthYearFromPayCycle, toWords } from "../util/Utils";
 
 function SalarySheet(props) {
   const { Title } = Typography;
@@ -31,7 +31,7 @@ function SalarySheet(props) {
   const style = {
     padding: "8px 0",
     height: "100%",
-    border: "1px solid",
+    fontWeight: 700,
   };
 
   return (
@@ -61,7 +61,7 @@ function SalarySheet(props) {
         }
         style={{ margin: "20px", borderRadius: "15px" }}
       >
-        <Row
+        <Row key={1}
           gutter={{
             xs: 8,
             sm: 16,
@@ -74,7 +74,7 @@ function SalarySheet(props) {
             {payCycle}
           </Col>
         </Row>
-        <Row
+        <Row key={2}
           gutter={{
             xs: 8,
             sm: 16,
@@ -86,7 +86,8 @@ function SalarySheet(props) {
             <Title level={3} style={{ textAlign: "left" }}>
               Earnings
             </Title>
-            <Row
+            <Divider />
+            <Row  key={3}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -103,7 +104,7 @@ function SalarySheet(props) {
                   : ""}
               </Col>
             </Row>
-            <Row
+            <Row  key={4}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -115,12 +116,14 @@ function SalarySheet(props) {
                 Fixed Allowance (LKR)
               </Col>
               <Col span={12} style={{ ...style, textAlign: "right" }}>
-                {!isSalariesLoading && typeof salaries[0] !== "undefined"
+                {!isSalariesLoading &&
+                typeof salaries[0] !== "undefined" &&
+                typeof salaries[0]["fixedAllowance"] !== "undefined"
                   ? "LKR " + salaries[0]["fixedAllowance"].toFixed(2)
                   : "N/A"}
               </Col>
             </Row>
-            <Row
+            <Row  key={5}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -132,12 +135,33 @@ function SalarySheet(props) {
                 Increment (LKR)
               </Col>
               <Col span={12} style={{ ...style, textAlign: "right" }}>
-                {!isSalariesLoading && typeof salaries[0] !== "undefined"
+                {!isSalariesLoading &&
+                typeof salaries[0] !== "undefined" &&
+                typeof salaries[0]["increment"] !== "undefined"
                   ? "LKR " + salaries[0]["increment"].toFixed(2)
                   : "N/A"}
               </Col>
             </Row>
-            <Row
+            <Row  key={6}
+              gutter={{
+                xs: 8,
+                sm: 16,
+                md: 24,
+                lg: 32,
+              }}
+            >
+              <Col span={12} style={{ ...style, textAlign: "left" }}>
+                Bonus (LKR)
+              </Col>
+              <Col span={12} style={{ ...style, textAlign: "right" }}>
+                {!isSalariesLoading &&
+                typeof salaries[0] !== "undefined" &&
+                typeof salaries[0]["bonus"] !== "undefined"
+                  ? "LKR " + salaries[0]["bonus"].toFixed(2)
+                  : "N/A"}
+              </Col>
+            </Row>
+            <Row  key={7}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -154,7 +178,7 @@ function SalarySheet(props) {
             salaries[0]["fixedCommissions"].length !== 0 ? (
               salaries[0]["fixedCommissions"].map((v, i) => {
                 return (
-                  <Row
+                  <Row  key={8}
                     gutter={{
                       xs: 8,
                       sm: 16,
@@ -182,7 +206,7 @@ function SalarySheet(props) {
                 );
               })
             ) : (
-              <Row
+              <Row  key={9}
                 gutter={{
                   xs: 8,
                   sm: 16,
@@ -209,7 +233,7 @@ function SalarySheet(props) {
               </Row>
             )}
 
-            <Row
+            <Row  key={10}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -226,7 +250,7 @@ function SalarySheet(props) {
             salaries[0]["perUnitCommissions"].length !== 0 ? (
               salaries[0]["perUnitCommissions"].map((v, i) => {
                 return (
-                  <Row
+                  <Row key={11}
                     gutter={{
                       xs: 8,
                       sm: 16,
@@ -251,7 +275,7 @@ function SalarySheet(props) {
                 );
               })
             ) : (
-              <Row
+              <Row key={12}
                 gutter={{
                   xs: 8,
                   sm: 16,
@@ -279,7 +303,8 @@ function SalarySheet(props) {
             <Title level={3} style={{ textAlign: "left" }}>
               Deductions
             </Title>
-            <Row
+            <Divider />
+            <Row key={13}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -288,36 +313,81 @@ function SalarySheet(props) {
               }}
             >
               <Col span={12} style={{ ...style, textAlign: "left" }}>
-                Basic Salary (LKR)
+                Reductions (LKR)
               </Col>
-              <Col span={12}></Col>
-            </Row>
-            <Row
-              gutter={{
-                xs: 8,
-                sm: 16,
-                md: 24,
-                lg: 32,
-              }}
-            >
-              <Col span={12} style={{ ...style, textAlign: "left" }}>
-                Fixed Allowance (LKR)
+              <Col span={12} style={{ ...style, textAlign: "right" }}>
+                {!isSalariesLoading &&
+                typeof salaries[0] !== "undefined" &&
+                typeof salaries[0]["reductions"] !== "undefined"
+                  ? "LKR " + salaries[0]["reductions"].toFixed(2)
+                  : "N/A"}
               </Col>
-              <Col span={12}></Col>
             </Row>
-            <Row
-              gutter={{
-                xs: 8,
-                sm: 16,
-                md: 24,
-                lg: 32,
-              }}
-            >
-              <Col span={12} style={{ ...style, textAlign: "left" }}>
-                Increment (LKR)
-              </Col>
-              <Col span={12}></Col>
-            </Row>
+          </Col>
+        </Row>
+        <Divider />
+        <Row key={14}
+          gutter={{
+            xs: 8,
+            sm: 16,
+            md: 24,
+            lg: 32,
+          }}
+        >
+          <Col span={8} style={{ ...style, textAlign: "right" }}>
+            Net Salary (LKR)
+          </Col>
+          <Col
+            span={8}
+            style={{ ...style, textAlign: "right", fontSize: "1.5rem" }}
+          >
+            {!isSalariesLoading &&
+            typeof salaries[0] !== "undefined" &&
+            typeof salaries[0]["netSalary"] !== "undefined"
+              ? "LKR " + salaries[0]["netSalary"].toFixed(2)
+              : "N/A"}
+          </Col>
+          <Col
+            span={8}
+            style={{ ...style, textAlign: "right", fontSize: "1.5rem" }}
+          >
+            {!isSalariesLoading &&
+            typeof salaries[0] !== "undefined" &&
+            typeof salaries[0]["netSalary"] !== "undefined"
+              ? toWords(salaries[0]["netSalary"])
+              : "N/A"}
+          </Col>
+        </Row>
+        <Row key={15}
+          gutter={{
+            xs: 8,
+            sm: 16,
+            md: 24,
+            lg: 32,
+          }}
+        >
+          <Col span={8} style={{ ...style, textAlign: "right" }}>
+            Gross Salary (LKR)
+          </Col>
+          <Col
+            span={8}
+            style={{ ...style, textAlign: "right", fontSize: "1.5rem" }}
+          >
+            {!isSalariesLoading &&
+            typeof salaries[0] !== "undefined" &&
+            typeof salaries[0]["grossSalary"] !== "undefined"
+              ? "LKR " + salaries[0]["grossSalary"].toFixed(2)
+              : "N/A"}
+          </Col>
+          <Col
+            span={8}
+            style={{ ...style, textAlign: "right", fontSize: "1.5rem" }}
+          >
+            {!isSalariesLoading &&
+            typeof salaries[0] !== "undefined" &&
+            typeof salaries[0]["grossSalary"] !== "undefined"
+              ? toWords(salaries[0]["grossSalary"])
+              : "N/A"}
           </Col>
         </Row>
       </Card>
