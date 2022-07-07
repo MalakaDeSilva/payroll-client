@@ -3,7 +3,11 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import { Row, Col, Card, Breadcrumb, Typography, Divider } from "antd";
 import { Link, useParams } from "react-router-dom";
 
-import { getMonthYearFromPayCycle, toWords } from "../util/Utils";
+import {
+  getMonthYearFromPayCycle,
+  toWords,
+  capitalizeFirstLetter,
+} from "../util/Utils";
 
 function SalarySheet(props) {
   const { Title } = Typography;
@@ -61,7 +65,8 @@ function SalarySheet(props) {
         }
         style={{ margin: "20px", borderRadius: "15px" }}
       >
-        <Row key={1}
+        <Row
+          key={1}
           gutter={{
             xs: 8,
             sm: 16,
@@ -74,7 +79,8 @@ function SalarySheet(props) {
             {payCycle}
           </Col>
         </Row>
-        <Row key={2}
+        <Row
+          key={2}
           gutter={{
             xs: 8,
             sm: 16,
@@ -87,7 +93,8 @@ function SalarySheet(props) {
               Earnings
             </Title>
             <Divider />
-            <Row  key={3}
+            <Row
+              key={3}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -104,7 +111,8 @@ function SalarySheet(props) {
                   : ""}
               </Col>
             </Row>
-            <Row  key={4}
+            <Row
+              key={4}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -123,7 +131,8 @@ function SalarySheet(props) {
                   : "N/A"}
               </Col>
             </Row>
-            <Row  key={5}
+            <Row
+              key={5}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -142,7 +151,8 @@ function SalarySheet(props) {
                   : "N/A"}
               </Col>
             </Row>
-            <Row  key={6}
+            <Row
+              key={6}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -161,7 +171,8 @@ function SalarySheet(props) {
                   : "N/A"}
               </Col>
             </Row>
-            <Row  key={7}
+            <Row
+              key={7}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -178,7 +189,8 @@ function SalarySheet(props) {
             salaries[0]["fixedCommissions"].length !== 0 ? (
               salaries[0]["fixedCommissions"].map((v, i) => {
                 return (
-                  <Row  key={8}
+                  <Row
+                    key={8}
                     gutter={{
                       xs: 8,
                       sm: 16,
@@ -206,7 +218,8 @@ function SalarySheet(props) {
                 );
               })
             ) : (
-              <Row  key={9}
+              <Row
+                key={9}
                 gutter={{
                   xs: 8,
                   sm: 16,
@@ -233,7 +246,8 @@ function SalarySheet(props) {
               </Row>
             )}
 
-            <Row  key={10}
+            <Row
+              key={10}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -250,7 +264,8 @@ function SalarySheet(props) {
             salaries[0]["perUnitCommissions"].length !== 0 ? (
               salaries[0]["perUnitCommissions"].map((v, i) => {
                 return (
-                  <Row key={11}
+                  <Row
+                    key={11}
                     gutter={{
                       xs: 8,
                       sm: 16,
@@ -275,7 +290,8 @@ function SalarySheet(props) {
                 );
               })
             ) : (
-              <Row key={12}
+              <Row
+                key={12}
                 gutter={{
                   xs: 8,
                   sm: 16,
@@ -304,7 +320,8 @@ function SalarySheet(props) {
               Deductions
             </Title>
             <Divider />
-            <Row key={13}
+            <Row
+              key={13}
               gutter={{
                 xs: 8,
                 sm: 16,
@@ -326,7 +343,8 @@ function SalarySheet(props) {
           </Col>
         </Row>
         <Divider />
-        <Row key={14}
+        <Row
+          key={14}
           gutter={{
             xs: 8,
             sm: 16,
@@ -334,7 +352,7 @@ function SalarySheet(props) {
             lg: 32,
           }}
         >
-          <Col span={8} style={{ ...style, textAlign: "right" }}>
+          <Col span={7} style={{ ...style, textAlign: "right" }}>
             Net Salary (LKR)
           </Col>
           <Col
@@ -348,17 +366,20 @@ function SalarySheet(props) {
               : "N/A"}
           </Col>
           <Col
-            span={8}
-            style={{ ...style, textAlign: "right", fontSize: "1.5rem" }}
+            span={9}
+            style={{ ...style, textAlign: "right", fontSize: "1.1rem" }}
           >
             {!isSalariesLoading &&
             typeof salaries[0] !== "undefined" &&
             typeof salaries[0]["netSalary"] !== "undefined"
-              ? toWords(salaries[0]["netSalary"])
+              ? "( " +
+                capitalizeFirstLetter(toWords(salaries[0]["netSalary"])) +
+                " )"
               : "N/A"}
           </Col>
         </Row>
-        <Row key={15}
+        <Row
+          key={15}
           gutter={{
             xs: 8,
             sm: 16,
@@ -366,7 +387,7 @@ function SalarySheet(props) {
             lg: 32,
           }}
         >
-          <Col span={8} style={{ ...style, textAlign: "right" }}>
+          <Col span={7} style={{ ...style, textAlign: "right" }}>
             Gross Salary (LKR)
           </Col>
           <Col
@@ -380,13 +401,15 @@ function SalarySheet(props) {
               : "N/A"}
           </Col>
           <Col
-            span={8}
-            style={{ ...style, textAlign: "right", fontSize: "1.5rem" }}
+            span={9}
+            style={{ ...style, textAlign: "right", fontSize: "1.1rem" }}
           >
             {!isSalariesLoading &&
             typeof salaries[0] !== "undefined" &&
             typeof salaries[0]["grossSalary"] !== "undefined"
-              ? toWords(salaries[0]["grossSalary"])
+              ? "( " +
+                capitalizeFirstLetter(toWords(salaries[0]["grossSalary"])) +
+                " )"
               : "N/A"}
           </Col>
         </Row>
