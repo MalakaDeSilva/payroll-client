@@ -175,9 +175,7 @@ function EmployeeSalary(props) {
                   label="Year"
                   initialValue={new Date().getFullYear()}
                 >
-                  <InputNumber
-                    style={{ width: "100%" }}
-                  ></InputNumber>
+                  <InputNumber style={{ width: "100%" }}></InputNumber>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -186,9 +184,7 @@ function EmployeeSalary(props) {
                   label="Month"
                   initialValue={new Date().getMonth().toString()}
                 >
-                  <Select
-                    style={{ width: "100%" }}
-                  >
+                  <Select style={{ width: "100%" }}>
                     <Option value="0">January</Option>
                     <Option value="1">February</Option>
                     <Option value="2">March</Option>
