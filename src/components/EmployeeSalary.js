@@ -12,12 +12,11 @@ import {
   Row,
   Tooltip,
   Form,
+  Breadcrumb,
 } from "antd";
-import {
-  LoadingOutlined,
-  AuditOutlined,
-} from "@ant-design/icons";
+import { LoadingOutlined, AuditOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getPayCycle } from "../util/Utils";
 
 function EmployeeSalary(props) {
@@ -175,9 +174,7 @@ function EmployeeSalary(props) {
                   label="Year"
                   initialValue={new Date().getFullYear()}
                 >
-                  <InputNumber
-                    style={{ width: "100%" }}
-                  ></InputNumber>
+                  <InputNumber style={{ width: "100%" }}></InputNumber>
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -186,9 +183,7 @@ function EmployeeSalary(props) {
                   label="Month"
                   initialValue={new Date().getMonth().toString()}
                 >
-                  <Select
-                    style={{ width: "100%" }}
-                  >
+                  <Select style={{ width: "100%" }}>
                     <Option value="0">January</Option>
                     <Option value="1">February</Option>
                     <Option value="2">March</Option>
@@ -260,6 +255,20 @@ function EmployeeSalary(props) {
 
   return (
     <div>
+      <Breadcrumb
+        style={{
+          display: "flex",
+          justifyContent: "start",
+          margin: "20px 40px",
+        }}
+      >
+        <Breadcrumb.Item>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to="/employee-salary">Employee Salary</Link>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <Card title="Salaries" style={{ margin: "20px", borderRadius: "15px" }}>
         {isEmpLoading ? (
           <Spin indicator={antIcon} />
