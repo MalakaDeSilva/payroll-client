@@ -10,6 +10,7 @@ import {
   Typography,
   Divider,
   message,
+  Breadcrumb,
 } from "antd";
 import {
   LoadingOutlined,
@@ -19,6 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import AddUpdateAddOn from "./AddUpdateAddOn";
 
@@ -36,11 +38,8 @@ function AddOns() {
   );
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   // eslint-disable-next-line
-  const {
-    getAddOnsByPayCycleThunk,
-    actionDrawer,
-    deleteAddOnThunk,
-  } = useStoreActions((actions) => actions.addOns);
+  const { getAddOnsByPayCycleThunk, actionDrawer, deleteAddOnThunk } =
+    useStoreActions((actions) => actions.addOns);
 
   useEffect(() => {
     getAddOnsByPayCycleThunk(data);
@@ -173,6 +172,20 @@ function AddOns() {
 
   return (
     <div>
+      <Breadcrumb
+        style={{
+          display: "flex",
+          justifyContent: "start",
+          margin: "20px 40px",
+        }}
+      >
+        <Breadcrumb.Item>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to="/add-ons">Add Ons</Link>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <AddUpdateAddOn
         visible={drawerVisible}
         title={title}

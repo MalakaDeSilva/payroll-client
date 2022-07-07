@@ -12,6 +12,7 @@ import {
   Row,
   Tooltip,
   Form,
+  Breadcrumb,
 } from "antd";
 import {
   LoadingOutlined,
@@ -296,6 +297,20 @@ function SalarySlips(props) {
 
   return (
     <div>
+      <Breadcrumb
+        style={{
+          display: "flex",
+          justifyContent: "start",
+          margin: "20px 40px",
+        }}
+      >
+        <Breadcrumb.Item>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to="/salary-slips">Payslips</Link>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <Card
         title="Payslips"
         style={{ margin: "20px", borderRadius: "15px" }}

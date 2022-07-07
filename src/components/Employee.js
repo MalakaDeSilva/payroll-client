@@ -10,6 +10,7 @@ import {
   message,
   Typography,
   Divider,
+  Breadcrumb,
 } from "antd";
 import {
   LoadingOutlined,
@@ -19,6 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import AddUpdateEmployee from "./AddUpdateEmployee";
 
@@ -164,9 +166,7 @@ function Employee(props) {
       content: (
         <>
           <div style={{ fontSize: "18px" }}>
-            <Text strong>
-              Do you want to delete {record.name}?
-            </Text>
+            <Text strong>Do you want to delete {record.name}?</Text>
           </div>
           <br />
           <p>Employee record will be deleted from the system.</p>
@@ -185,6 +185,20 @@ function Employee(props) {
 
   return (
     <div>
+      <Breadcrumb
+        style={{
+          display: "flex",
+          justifyContent: "start",
+          margin: "20px 40px",
+        }}
+      >
+        <Breadcrumb.Item>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to="/employee">Employee</Link>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <AddUpdateEmployee
         visible={drawerVisible}
         title={title}

@@ -10,6 +10,7 @@ import {
   Modal,
   Divider,
   message,
+  Breadcrumb,
 } from "antd";
 import {
   LoadingOutlined,
@@ -19,6 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import AddUpdateDesignation from "./AddUpdateDesignation";
 
@@ -151,6 +153,20 @@ function Designations() {
 
   return (
     <div>
+      <Breadcrumb
+        style={{
+          display: "flex",
+          justifyContent: "start",
+          margin: "20px 40px",
+        }}
+      >
+        <Breadcrumb.Item>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to="/designations">Designations</Link>
+        </Breadcrumb.Item>
+      </Breadcrumb>
       <AddUpdateDesignation
         visible={drawerVisible}
         title={title}
