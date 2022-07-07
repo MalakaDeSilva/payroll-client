@@ -36,24 +36,24 @@ function SideBar(props) {
             </Menu.Item>
             <SubMenu key="sub1" icon={<UserOutlined />} title="Management">
               <Menu.Item key="2">
-                <Link to="employee">Employees</Link>
+                <Link to="/employee">Employees</Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to="commissions">Commisions</Link>
+                <Link to="/commissions">Commisions</Link>
               </Menu.Item>
               <Menu.Item key="4">
-                <Link to="add-ons">Add Ons</Link>
+                <Link to="/add-ons">Add Ons</Link>
               </Menu.Item>
               <Menu.Item key="5">
-                <Link to="designations">Designations</Link>
+                <Link to="/designations">Designations</Link>
               </Menu.Item>
             </SubMenu>
             <SubMenu key="sub2" icon={<BankOutlined />} title="Payroll">
               <Menu.Item key="6">
-                <Link to="employee-salary">Empoloyee Salary</Link>
+                <Link to="/employee-salary">Empoloyee Salary</Link>
               </Menu.Item>
               <Menu.Item key="7">
-                <Link to="salary-slips">Payslips</Link>
+                <Link to="/salary-slips">Payslips</Link>
               </Menu.Item>
             </SubMenu>
           </Menu>
@@ -61,13 +61,13 @@ function SideBar(props) {
         <Layout style={{ minHeight: "100vh" }}>
           <Content>
             <Routes>
-              <Route path="" element={<Overview />} />
-              <Route path="employee" element={<Employee />} />
-              <Route path="commissions" element={<Commisions />} />
-              <Route path="add-ons" element={<AddOns />} />
-              <Route path="designations" element={<Designations />} />
-              <Route path="employee-salary" element={<EmployeeSalary />} />
-              <Route path="salary-slips" element={<SalarySlips />} />
+              <Route exact path="/" element={<Overview />} />
+              <Route path="/employee" element={<Employee />} />
+              <Route path="/commissions" element={<Commisions />} />
+              <Route path="/add-ons" element={<AddOns />} />
+              <Route path="/designations" element={<Designations />} />
+              <Route path="/employee-salary" element={<EmployeeSalary />} />
+              <Route exact path="/salary-slips" element={<SalarySlips />} />
             </Routes>
           </Content>
         </Layout>
