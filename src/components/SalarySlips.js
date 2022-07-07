@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { getPayCycle } from "../util/Utils";
+import { Link } from "react-router-dom";
 
 function SalarySlips(props) {
   let date = new Date();
@@ -82,7 +83,13 @@ function SalarySlips(props) {
           <Space size="middle">
             <Tooltip title={"View Slip"}>
               <Space size="middle">
-                <Button icon={<AuditOutlined />} shape="circle"></Button>
+                <Link
+                  to={
+                    "salary-sheet/" + record.employeeId + "/" + record.payCycle
+                  }
+                >
+                  <Button icon={<AuditOutlined />} shape="circle"></Button>
+                </Link>
               </Space>
             </Tooltip>
             <Tooltip title={"Update Slip"}>
