@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { Row, Col, Card, Breadcrumb, Typography, Divider } from "antd";
+import { Row, Col, Card, Breadcrumb, Typography, Divider, Button } from "antd";
+import { PrinterOutlined } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
+
+import { generateSlip } from "../services/SalaryService";
 
 import {
   getMonthYearFromPayCycle,
@@ -64,6 +67,18 @@ function SalarySheet(props) {
     return desg;
   };
 
+  const generateSalarySlip = () => {
+    let id = salaries[0]["_id"];
+    generateSlip(id)
+    .then((response) => {
+      const blob = new Blob([response.data], {type: 'application/pdf'})
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = `your-file-name.pdf`
+      link.click()
+    });
+  };
+
   return (
     <div>
       <Breadcrumb
@@ -89,6 +104,14 @@ function SalarySheet(props) {
         title={
           "SALARY SLIP FOR THE MONTH OF " + month.toUpperCase() + ", " + year
         }
+        extra={
+          <Button
+            icon={<PrinterOutlined style={{ fontSize: "25px" }} />}
+            shape="circle"
+            size="large"
+            onClick={generateSalarySlip}
+          ></Button>
+        }
         style={{ margin: "20px", borderRadius: "15px" }}
       >
         <Row
@@ -101,7 +124,7 @@ function SalarySheet(props) {
           }}
         >
           <Col span={8} offset={8}>
-            <Title level={1}>Picaroon Pvt. Ltd.</Title> 
+            <Title level={1}>Picaroon Pvt. Ltd.</Title>
           </Col>
         </Row>
         <Row
@@ -112,8 +135,7 @@ function SalarySheet(props) {
             md: 24,
             lg: 32,
           }}
-          
-          style={{marginLeft: "40px"}}
+          style={{ marginLeft: "40px" }}
         >
           <Col span={6}>
             <Row
@@ -125,7 +147,10 @@ function SalarySheet(props) {
                 lg: 32,
               }}
             >
-              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+              <Col
+                span={24}
+                style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}
+              >
                 {getEmployee(empId).name}
               </Col>
             </Row>
@@ -138,7 +163,10 @@ function SalarySheet(props) {
                 lg: 32,
               }}
             >
-              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+              <Col
+                span={24}
+                style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}
+              >
                 {getDesignation(getEmployee(empId).designation)}
               </Col>
             </Row>
@@ -151,7 +179,10 @@ function SalarySheet(props) {
                 lg: 32,
               }}
             >
-              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+              <Col
+                span={24}
+                style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}
+              >
                 {"Employee ID: " + getEmployee(empId).employeeId}
               </Col>
             </Row>
@@ -164,7 +195,10 @@ function SalarySheet(props) {
                 lg: 32,
               }}
             >
-              <Col span={24} style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}>
+              <Col
+                span={24}
+                style={{ textAlign: "left", fontWeight: 600, fontSize: "18px" }}
+              >
                 {"Joining Date: " +
                   new Date(getEmployee(empId).joinedDate).toLocaleDateString()}
               </Col>
