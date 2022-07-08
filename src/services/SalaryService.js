@@ -31,3 +31,12 @@ export async function updateSalaryData(data) {
 export async function deleteSalaryData(id) {
   return await axios.delete(`${baseURL}/salary/${id}`);
 }
+
+export async function generateSlip(id) {
+  return await axios.get(`${baseURL}/salary/slip/generate/${id}`, {
+    responseType: "arraybuffer",
+    headers: {
+      Accept: "application/pdf",
+    },
+  });
+}
