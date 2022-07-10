@@ -106,6 +106,22 @@ function AddUpdateEmployee(props) {
         nic: emp.NIC,
       });
 
+      if (isDesgLoading) {
+        setPayRange({
+          salFrom: 0,
+          salTo: 0,
+        });
+      } else {
+        designations.forEach((value, index) => {
+          if (value.designationCode === emp.designation) {
+            setPayRange({
+              salFrom: value.salaryRange.from,
+              salTo: value.salaryRange.to,
+            });
+          }
+        });
+      }
+
       if (typeof emp.salary != "undefined") {
         setSalaryField(false);
       }
