@@ -12,18 +12,15 @@ import {
   Tooltip,
 } from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import { getPayCycle } from "../util/Utils";
+import { getMonthYearFromPayCycle, getPayCycle } from "../util/Utils";
 
 function NewFixedCommission(props) {
   const [form] = Form.useForm();
 
   const { visible, onClose, title, comm, action } = props;
 
-  const {
-    addCommissionsThunk,
-    updateCommissionsThunk,
-    actionDrawer,
-  } = useStoreActions((actions) => actions.fixedCommissions);
+  const { addCommissionsThunk, updateCommissionsThunk, actionDrawer } =
+    useStoreActions((actions) => actions.fixedCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
 
@@ -38,6 +35,9 @@ function NewFixedCommission(props) {
   };
 
   const onFinish = (values) => {
+    let payCycle = getPayCycle(values["year"], values["month"]);
+    values["payCycle"] = payCycle;
+    
     if (action === "ADD") {
       addCommissionsThunk(values);
     } else if (action === "UPDATE") {
@@ -63,14 +63,23 @@ function NewFixedCommission(props) {
 
   const onVisibilityChange = (visible) => {
     if (visible) {
+      let _year, _month;
+
+      if (comm.payCycle === "" || typeof comm.payCycle === "undefined") {
+        _year = new Date().getFullYear();
+        _month = new Date().getMonth().toString();
+      } else {
+        let _payCycle = getMonthYearFromPayCycle(comm.payCycle);
+        _year = _payCycle["year"];
+        _month = _payCycle["month"];
+      }
+
       form.setFieldsValue({
         name: comm.commissionName,
         employeeId: comm.employeeId,
         amount: comm.amount,
-        payCycle:
-          comm.payCycle === "" || typeof comm.payCycle === "undefined"
-            ? getPayCycle()
-            : comm.payCycle,
+        year: _year,
+        month: _month,
       });
     }
   };
@@ -113,7 +122,7 @@ function NewFixedCommission(props) {
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               name="amount"
               label="Amount"
@@ -125,20 +134,40 @@ function NewFixedCommission(props) {
               />
             </Form.Item>
           </Col>
+        </Row>
+        <Row gutter={16} style={{ paddingLeft: "8px", paddingBottom: "5px" }}>
+          <Tooltip
+            placement="top"
+            title="If no value is given, current pay cycle will be selected."
+          >
+            Pay Cycle *
+          </Tooltip>
+        </Row>
+        <Row gutter={16}>
           <Col span={12}>
-            <Form.Item
-              name="payCycle"
-              label={
-                <Tooltip
-                  placement="top"
-                  title="If no value is given, current pay cycle will be selected."
-                >
-                  Pay Cycle *
-                </Tooltip>
-              }
-              initialValue={getPayCycle()}
-            >
-              <Input placeholder="Please enter Pay Cycle" />
+            <Form.Item name="year" label={"Year"}>
+              <InputNumber
+                placeholder="Please enter Pay Cycle"
+                style={{ width: "100%" }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item name="month" label={"Month"}>
+              <Select style={{ width: "100%" }}>
+                <Option value="0">January</Option>
+                <Option value="1">February</Option>
+                <Option value="2">March</Option>
+                <Option value="3">April</Option>
+                <Option value="4">May</Option>
+                <Option value="5">June</Option>
+                <Option value="6">July</Option>
+                <Option value="7">August</Option>
+                <Option value="8">September</Option>
+                <Option value="9">October</Option>
+                <Option value="10">November</Option>
+                <Option value="11">December</Option>
+              </Select>
             </Form.Item>
           </Col>
         </Row>
