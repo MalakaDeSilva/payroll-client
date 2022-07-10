@@ -182,7 +182,9 @@ function AddUpdateEmployee(props) {
               <Form.Item
                 name="joinedDate"
                 label="Joined Date"
-                rules={[{ required: true, message: "Please enter joined date." }]}
+                rules={[
+                  { required: true, message: "Please enter joined date." },
+                ]}
               >
                 <Input placeholder="Please enter joined date" type={"date"} />
               </Form.Item>
