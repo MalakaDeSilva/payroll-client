@@ -106,6 +106,22 @@ function AddUpdateEmployee(props) {
         nic: emp.NIC,
       });
 
+      if (isDesgLoading) {
+        setPayRange({
+          salFrom: 0,
+          salTo: 0,
+        });
+      } else {
+        designations.forEach((value, index) => {
+          if (value.designationCode === emp.designation) {
+            setPayRange({
+              salFrom: value.salaryRange.from,
+              salTo: value.salaryRange.to,
+            });
+          }
+        });
+      }
+
       if (typeof emp.salary != "undefined") {
         setSalaryField(false);
       }
@@ -164,9 +180,11 @@ function AddUpdateEmployee(props) {
             </Col>
             <Col span={10}>
               <Form.Item
-                name="joinedDate"
+                name="date"
                 label="Joined Date"
-                rules={[{ required: true, message: "Please enter joined date." }]}
+                rules={[
+                  { required: true, message: "Please enter joined date." },
+                ]}
               >
                 <Input placeholder="Please enter joined date" type={"date"} />
               </Form.Item>

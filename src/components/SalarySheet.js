@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { Row, Col, Card, Breadcrumb, Typography, Divider, Button } from "antd";
 import { PrinterOutlined } from "@ant-design/icons";
@@ -17,6 +17,7 @@ function SalarySheet(props) {
 
   const { empId, payCycle } = useParams();
   const { month, year } = getMonthYearFromPayCycle(payCycle);
+  const [loading, setLoading] = useState(false);
 
   // eslint-disable-next-line
   const { employees, isEmpLoading } = useStoreState((state) => state.employees); // eslint-disable-next-line
@@ -68,14 +69,15 @@ function SalarySheet(props) {
   };
 
   const generateSalarySlip = () => {
+    setLoading(true);
     let id = salaries[0]["_id"];
-    generateSlip(id)
-    .then((response) => {
-      const blob = new Blob([response.data], {type: 'application/pdf'})
-      const link = document.createElement('a')
-      link.href = window.URL.createObjectURL(blob)
-      link.download = `your-file-name.pdf`
-      link.click()
+    generateSlip(id).then((response) => {
+      setLoading(false);
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `your-file-name.pdf`;
+      link.click();
     });
   };
 
@@ -109,6 +111,7 @@ function SalarySheet(props) {
             icon={<PrinterOutlined style={{ fontSize: "25px" }} />}
             shape="circle"
             size="large"
+            loading={loading}
             onClick={generateSalarySlip}
           ></Button>
         }
