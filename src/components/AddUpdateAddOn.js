@@ -154,6 +154,34 @@ function NewAddOn(props) {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
+              <Form.Item
+                name="bonus"
+                label="Bonus"
+                rules={[
+                  { required: true, message: "Please enter bonus" },
+                ]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  placeholder="Please enter bonus"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="reductions"
+                label="Reductions"
+                rules={[{ required: true, message: "Please enter reductions" }]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  placeholder="Please enter reductions"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
               <Form.Item>
                 <Space>
                   <Button type="primary" htmlType="submit">

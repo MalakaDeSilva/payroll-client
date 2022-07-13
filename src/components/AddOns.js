@@ -76,6 +76,22 @@ function AddOns() {
       },
     },
     {
+      title: "Bonus (LKR)",
+      dataIndex: "bonus",
+      key: "bonus",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
+    },
+    {
+      title: "Reductions (LKR)",
+      dataIndex: "reductions",
+      key: "reductions",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
+    },
+    {
       title: "Action",
       key: "action",
       render: (text, record) => (
