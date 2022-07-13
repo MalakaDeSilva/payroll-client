@@ -170,28 +170,30 @@ export function toWords(numberInput) {
     
   if (!num) return;
 
-  let outputText =
+  let outputText = // eslint-disable-next-line
     num[1] != 0
       ? (oneToTwenty[Number(num[1])] ||
           `${tenth[num[1][0]]} ${oneToTwenty[num[1][1]]}`) + " million "
       : "";
 
-  outputText +=
+  outputText += // eslint-disable-next-line
     num[2] != 0
       ? (oneToTwenty[Number(num[2])] ||
           `${tenth[num[2][0]]} ${oneToTwenty[num[2][1]]}`) + "hundred "
       : "";
-  outputText +=
+  outputText += // eslint-disable-next-line
     num[3] != 0
       ? (oneToTwenty[Number(num[3])] ||
           `${tenth[num[3][0]]} ${oneToTwenty[num[3][1]]}`) + " thousand "
       : "";
-  outputText +=
+      
+  outputText += // eslint-disable-next-line
     num[4] != 0
       ? (oneToTwenty[Number(num[4])] ||
           `${tenth[num[4][0]]} ${oneToTwenty[num[4][1]]}`) + "hundred "
       : "";
-  outputText +=
+
+  outputText += // eslint-disable-next-line
     num[5] != 0
       ? oneToTwenty[Number(num[5])] ||
         `${tenth[num[5][0]]} ${oneToTwenty[num[5][1]]} `
