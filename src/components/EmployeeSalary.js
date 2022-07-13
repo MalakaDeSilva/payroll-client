@@ -237,7 +237,7 @@ function EmployeeSalary(props) {
     });
   };
 
-  const generateSalarySlip = (_values, _empId) => {
+  const generateSalarySlip = async (_values, _empId) => {
     _values = {
       employeeId: _empId,
       payCycle: getPayCycle(_values["year"], _values["month"]),
@@ -247,7 +247,12 @@ function EmployeeSalary(props) {
     delete _values["year"];
     delete _values["month"];
 
-    addSalaryThunk(_values);
+    let result = await addSalaryThunk(_values);
+    if (typeof result["data"]["createdSalary"] != "undefined") {
+      message.success(`Salary slip generated.`);
+    } else {
+      message.error("An error occurred.");
+    }
     Modal.destroyAll();
   };
 
