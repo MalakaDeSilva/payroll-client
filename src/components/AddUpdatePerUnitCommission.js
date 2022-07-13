@@ -37,7 +37,7 @@ function NewPerUnitCommission(props) {
   const onFinish = (values) => {
     let payCycle = getPayCycle(values["year"], values["month"]);
     values["payCycle"] = payCycle;
-    
+
     if (action === "ADD") {
       addCommissionsThunk(values);
     } else if (action === "UPDATE") {
