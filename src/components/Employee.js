@@ -68,7 +68,9 @@ function Employee(props) {
       title: "Joined Date",
       dataIndex: "joinedDate",
       key: "joinedDate",
-      render: (data) => <Space size="middle">{new Date(data).toLocaleDateString()}</Space>,
+      render: (data) => (
+        <Space size="middle">{new Date(data).toLocaleDateString()}</Space>
+      ),
     },
     {
       title: "Salary (LKR)",
