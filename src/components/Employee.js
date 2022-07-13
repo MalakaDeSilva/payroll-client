@@ -181,9 +181,14 @@ function Employee(props) {
           <p>Employee record will be deleted from the system.</p>
         </>
       ),
-      onOk: () => {
-        deleteEmployeeThunk(record._id);
-        message.success("Employee is removed.", 1.5);
+      onOk: async () => {
+        let result = await deleteEmployeeThunk(record._id);
+        if (typeof result["data"]["deletedEmployee"] != "undefined") {
+          message.success("Employee is removed.", 1.5);
+        } else {
+          message.error("An error occurred.");
+        }
+
         closeModal();
       },
       onCancel: closeModal,

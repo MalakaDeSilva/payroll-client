@@ -182,9 +182,14 @@ function AddOns() {
           <p>Add On record will be deleted from the system.</p>
         </>
       ),
-      onOk: () => {
-        deleteAddOnThunk(record._id);
-        message.success("Add On is removed.", 1.5);
+      onOk: async () => {
+        let result = await deleteAddOnThunk(record._id);
+        if (typeof result["data"]["deletedAddOn"] != "undefined") {
+          message.success("Add On is removed.", 1.5);
+        } else {
+          message.error("An error occurred");
+        }
+
         closeModal();
       },
       onCancel: closeModal,

@@ -9,6 +9,7 @@ import {
   Select,
   Button,
   Space,
+  message
 } from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
@@ -48,12 +49,24 @@ function AddUpdateEmployee(props) {
     actionDrawer();
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (action === "ADD") {
-      addEmployeeThunk(values);
+      let result = await addEmployeeThunk(values);
+
+      if(typeof result["data"]["createdEmployee"] != "undefined") {
+        message.success("Employee added.")
+      } else {
+        message.error("An error occurred.")
+      }
     } else if (action === "UPDATE") {
       values["_id"] = emp["_id"];
-      updateEmployeeThunk(values);
+      let result = await updateEmployeeThunk(values);
+
+      if(typeof result["data"]["updatedEmployee"] != "undefined") {
+        message.success("Employee updated.")
+      } else {
+        message.error("An error occurred.")
+      }
     }
 
     toggleDrawer();

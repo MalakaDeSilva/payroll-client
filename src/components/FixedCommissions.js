@@ -191,9 +191,14 @@ function FixedCommissions(props) {
           <p>Commission will be deleted from the system.</p>
         </>
       ),
-      onOk: () => {
-        deleteCommissionsThunk(record._id);
-        message.success("Commission is removed.", 1.5);
+      onOk: async () => {
+        let result = await deleteCommissionsThunk(record._id);
+        if (typeof result["data"]["deletedCommission"] != "undefined") {
+          message.success("Commission is removed.", 1.5);
+        } else {
+          message.error("An error occurred.");
+        }
+
         closeModal();
       },
       onCancel: closeModal,

@@ -8,6 +8,7 @@ import {
   Button,
   Space,
   InputNumber,
+  message,
 } from "antd";
 import { useStoreActions } from "easy-peasy";
 
@@ -23,12 +24,22 @@ function NewDesignation(props) {
     actionDrawer();
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (action === "ADD") {
-      addDesignationThunk(values);
+      let result = await addDesignationThunk(values);
+      if (typeof result["data"]["createdDesignation"] != "undefined") {
+        message.success("Designation added.");
+      } else {
+        message.error("An error occurred.");
+      }
     } else if (action === "UPDATE") {
       values["_id"] = desg["_id"];
-      updateDesignationThunk(values);
+      let result = await updateDesignationThunk(values);
+      if (typeof result["data"]["updatedDesignation"] != "undefined") {
+        message.success("Designation updated.");
+      } else {
+        message.error("An error occurred.");
+      }
     }
 
     toggleDrawer();
@@ -41,7 +52,8 @@ function NewDesignation(props) {
         code: desg.designationCode,
         salFrom:
           typeof desg.salaryRange !== "undefined" ? desg.salaryRange.from : 0,
-        salTo: typeof desg.salaryRange !== "undefined" ? desg.salaryRange.to : 0,
+        salTo:
+          typeof desg.salaryRange !== "undefined" ? desg.salaryRange.to : 0,
       });
     }
   };

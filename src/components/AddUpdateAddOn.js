@@ -10,6 +10,7 @@ import {
   Button,
   Space,
   Tooltip,
+  message,
 } from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 
@@ -35,12 +36,22 @@ function NewAddOn(props) {
     actionDrawer();
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (action === "ADD") {
-      addAddOnThunk(values);
+      let result = await addAddOnThunk(values);
+      if (typeof result["data"]["createdAddOn"] != "undefined") {
+        message.success("Add On added");
+      } else {
+        message.error("An error occurred");
+      }
     } else if (action === "UPDATE") {
       values["_id"] = addOn["_id"];
-      updateAddOnThunk(values);
+      let result = await updateAddOnThunk(values);
+      if (typeof result["data"]["updatedAddOn"] != "undefined") {
+        message.success("Add On updated");
+      } else {
+        message.error("An error occurred");
+      }
     }
 
     toggleDrawer();
@@ -157,9 +168,6 @@ function NewAddOn(props) {
               <Form.Item
                 name="bonus"
                 label="Bonus"
-                rules={[
-                  { required: true, message: "Please enter bonus" },
-                ]}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -171,7 +179,6 @@ function NewAddOn(props) {
               <Form.Item
                 name="reductions"
                 label="Reductions"
-                rules={[{ required: true, message: "Please enter reductions" }]}
               >
                 <InputNumber
                   style={{ width: "100%" }}
