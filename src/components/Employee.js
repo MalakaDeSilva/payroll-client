@@ -31,9 +31,8 @@ function Employee(props) {
 
   const { Title, Text } = Typography;
 
-  const { employees, isEmpLoading, drawerVisible } = useStoreState(
-    (state) => state.employees
-  );
+  const { employees, isEmpLoading, drawerVisible, employeeCount } =
+    useStoreState((state) => state.employees);
   const { designations, isDesgLoading } = useStoreState(
     (state) => state.designations
   );
@@ -119,7 +118,9 @@ function Employee(props) {
   };
 
   const toggleDrawer = () => {
-    setEmp({});
+    setEmp({
+      employeeId: generateEmpId(),
+    });
     setAction("ADD");
     setTitle("New Employee");
     actionDrawer();
@@ -185,6 +186,12 @@ function Employee(props) {
       },
       onCancel: closeModal,
     });
+  };
+
+  const generateEmpId = () => {
+    let newEmp = `PIC/00${employeeCount + 1}`;
+
+    return newEmp;
   };
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
