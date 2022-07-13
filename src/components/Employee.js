@@ -66,6 +66,12 @@ function Employee(props) {
       render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
     },
     {
+      title: "Joined Date",
+      dataIndex: "joinedDate",
+      key: "joinedDate",
+      render: (data) => <Space size="middle">{new Date(data).toLocaleDateString()}</Space>,
+    },
+    {
       title: "Salary (LKR)",
       dataIndex: "salary",
       key: "salary",
