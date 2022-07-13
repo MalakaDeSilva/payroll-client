@@ -13,6 +13,7 @@ import {
   Tooltip,
   Form,
   Breadcrumb,
+  message,
 } from "antd";
 import { LoadingOutlined, AuditOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
@@ -202,18 +203,6 @@ function EmployeeSalary(props) {
             </Row>
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item name="bonus" label="Bonus">
-                  <InputNumber style={{ width: "100%" }}></InputNumber>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item name="reductions" label="Reductions">
-                  <InputNumber style={{ width: "100%" }}></InputNumber>
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
                 <Form.Item>
                   <Space>
                     <Button type="primary" htmlType="submit">
@@ -237,7 +226,7 @@ function EmployeeSalary(props) {
     });
   };
 
-  const generateSalarySlip = (_values, _empId) => {
+  const generateSalarySlip = async (_values, _empId) => {
     _values = {
       employeeId: _empId,
       payCycle: getPayCycle(_values["year"], _values["month"]),
@@ -247,7 +236,12 @@ function EmployeeSalary(props) {
     delete _values["year"];
     delete _values["month"];
 
-    addSalaryThunk(_values);
+    let result = await addSalaryThunk(_values);
+    if (typeof result["data"]["createdSalary"] != "undefined") {
+      message.success(`Salary slip generated.`);
+    } else {
+      message.error("An error occurred.");
+    }
     Modal.destroyAll();
   };
 

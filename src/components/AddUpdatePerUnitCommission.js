@@ -10,6 +10,7 @@ import {
   Space,
   Select,
   Tooltip,
+  message,
 } from "antd";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { getPayCycle, getMonthYearFromPayCycle } from "../util/Utils";
@@ -34,15 +35,25 @@ function NewPerUnitCommission(props) {
     actionDrawer();
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     let payCycle = getPayCycle(values["year"], values["month"]);
     values["payCycle"] = payCycle;
-    
+
     if (action === "ADD") {
-      addCommissionsThunk(values);
+      let result = await addCommissionsThunk(values);
+      if (typeof result["data"]["createdCommission"] != "undefined") {
+        message.success("Commission added");
+      } else {
+        message.error("An error occurred.");
+      }
     } else if (action === "UPDATE") {
       values["_id"] = comm["_id"];
-      updateCommissionsThunk(values);
+      let result = await updateCommissionsThunk(values);
+      if (typeof result["data"]["updatedCommission"] != "undefined") {
+        message.success("Commission updated");
+      } else {
+        message.error("An error occurred.");
+      }
     }
     toggleDrawer();
   };
@@ -139,11 +150,12 @@ function NewPerUnitCommission(props) {
             <Form.Item
               name="units"
               label="Units"
+              initialValue={1}
               rules={[
                 { required: true, message: "Please enter amount of Units." },
               ]}
             >
-              <InputNumber min={1} defaultValue={1} />
+              <InputNumber min={1} />
             </Form.Item>
           </Col>
         </Row>

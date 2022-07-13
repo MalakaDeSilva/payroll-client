@@ -89,7 +89,11 @@ const AddOnsStore = {
 
     try {
       let result = await addAddOnsData(data);
-      action.pushAddOnsAction(result["data"]["createdAddOn"]);
+      if (typeof result["data"]["createdAddOn"] != "undefined")
+        action.pushAddOnsAction(result["data"]["createdAddOn"]);
+
+      action.setIsAddOnsLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -101,7 +105,11 @@ const AddOnsStore = {
 
     try {
       let result = await updateAddOnsData(data);
-      action.updateAddOnsAction(result["data"]["updatedAddOn"]);
+      if (typeof result["data"]["updatedAddOn"] != "undefined")
+        action.updateAddOnsAction(result["data"]["updatedAddOn"]);
+
+      action.setIsAddOnsLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -113,7 +121,11 @@ const AddOnsStore = {
 
     try {
       let result = await deleteAddOnsData(id);
-      action.popAddOnsAction(result["data"]["deletedAddOn"]["_id"]);
+      if (typeof result["data"]["deletedAddOn"] != "undefined")
+        action.popAddOnsAction(result["data"]["deletedAddOn"]["_id"]);
+
+      action.setIsAddOnsLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }

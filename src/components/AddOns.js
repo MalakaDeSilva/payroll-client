@@ -11,6 +11,11 @@ import {
   Divider,
   message,
   Breadcrumb,
+  Form,
+  Row,
+  Col,
+  InputNumber,
+  Select,
 } from "antd";
 import {
   LoadingOutlined,
@@ -23,6 +28,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import AddUpdateAddOn from "./AddUpdateAddOn";
+import { getPayCycle } from "../util/Utils";
 
 function AddOns() {
   const [title, setTitle] = useState("New Add On");
@@ -30,8 +36,9 @@ function AddOns() {
   const [action, setAction] = useState("ADD");
 
   const { Title, Text } = Typography;
+  const { Option } = Select;
 
-  let data = { payCycle: "2022JUN" };
+  let data = { payCycle: getPayCycle() };
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
   const { addOns, isAddOnsLoading, drawerVisible } = useStoreState(
     (state) => state.addOns
@@ -71,6 +78,22 @@ function AddOns() {
       title: "Increment (LKR)",
       dataIndex: "increment",
       key: "increment",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
+    },
+    {
+      title: "Bonus (LKR)",
+      dataIndex: "bonus",
+      key: "bonus",
+      render: (text, record) => {
+        return <Space size="middle">{text.toFixed(2)}</Space>;
+      },
+    },
+    {
+      title: "Reductions (LKR)",
+      dataIndex: "reductions",
+      key: "reductions",
       render: (text, record) => {
         return <Space size="middle">{text.toFixed(2)}</Space>;
       },
@@ -159,12 +182,91 @@ function AddOns() {
           <p>Add On record will be deleted from the system.</p>
         </>
       ),
-      onOk: () => {
-        deleteAddOnThunk(record._id);
-        message.success("Add On is removed.", 1.5);
+      onOk: async () => {
+        let result = await deleteAddOnThunk(record._id);
+        if (typeof result["data"]["deletedAddOn"] != "undefined") {
+          message.success("Add On is removed.", 1.5);
+        } else {
+          message.error("An error occurred");
+        }
+
         closeModal();
       },
       onCancel: closeModal,
+    });
+  };
+
+  const setPayCycleFilter = () => {
+    Modal.info({
+      title: "Set Pay Cycle",
+      icon: "",
+      content: (
+        <div style={{ marginTop: "10px" }}>
+          <Form
+            layout="vertical"
+            onFinish={(values) => {
+              let _payCycle = {
+                payCycle: getPayCycle(values.year, values.month.toString()),
+              };
+              getAddOnsByPayCycleThunk(_payCycle);
+              Modal.destroyAll();
+            }}
+          >
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  name="year"
+                  label="Year"
+                  initialValue={new Date().getFullYear()}
+                >
+                  <InputNumber style={{ width: "100%" }}></InputNumber>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  name="month"
+                  label="Month"
+                  initialValue={new Date().getMonth().toString()}
+                >
+                  <Select style={{ width: "100%" }}>
+                    <Option value="0">January</Option>
+                    <Option value="1">February</Option>
+                    <Option value="2">March</Option>
+                    <Option value="3">April</Option>
+                    <Option value="4">May</Option>
+                    <Option value="5">June</Option>
+                    <Option value="6">July</Option>
+                    <Option value="7">August</Option>
+                    <Option value="8">September</Option>
+                    <Option value="9">October</Option>
+                    <Option value="10">November</Option>
+                    <Option value="11">December</Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item>
+                  <Space>
+                    <Button type="primary" htmlType="submit">
+                      Select
+                    </Button>
+                    <Button
+                      type="default"
+                      htmlType="button"
+                      onClick={() => Modal.destroyAll()}
+                    >
+                      Cancel
+                    </Button>
+                  </Space>
+                </Form.Item>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+      ),
+      okButtonProps: { style: { display: "none" } },
     });
   };
 
@@ -197,15 +299,20 @@ function AddOns() {
         title="Add Ons"
         style={{ margin: "20px", borderRadius: "15px" }}
         extra={
-          <Tooltip title="New Add On">
-            <Button
-              type="primary"
-              icon={<UserAddOutlined />}
-              onClick={toggleDrawer}
-            >
-              New Add On
+          <div>
+            <Button onClick={setPayCycleFilter} style={{ marginRight: "5px" }}>
+              Pay Cycle
             </Button>
-          </Tooltip>
+            <Tooltip title="New Add On">
+              <Button
+                type="primary"
+                icon={<UserAddOutlined />}
+                onClick={toggleDrawer}
+              >
+                New Add On
+              </Button>
+            </Tooltip>
+          </div>
         }
       >
         {isAddOnsLoading ? (

@@ -31,9 +31,8 @@ function Employee(props) {
 
   const { Title, Text } = Typography;
 
-  const { employees, isEmpLoading, drawerVisible } = useStoreState(
-    (state) => state.employees
-  );
+  const { employees, isEmpLoading, drawerVisible, employeeCount } =
+    useStoreState((state) => state.employees);
   const { designations, isDesgLoading } = useStoreState(
     (state) => state.designations
   );
@@ -64,6 +63,14 @@ function Employee(props) {
       dataIndex: "designation",
       key: "designation",
       render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
+    },
+    {
+      title: "Joined Date",
+      dataIndex: "joinedDate",
+      key: "joinedDate",
+      render: (data) => (
+        <Space size="middle">{new Date(data).toLocaleDateString()}</Space>
+      ),
     },
     {
       title: "Salary (LKR)",
@@ -113,7 +120,9 @@ function Employee(props) {
   };
 
   const toggleDrawer = () => {
-    setEmp({});
+    setEmp({
+      employeeId: generateEmpId(),
+    });
     setAction("ADD");
     setTitle("New Employee");
     actionDrawer();
@@ -172,13 +181,24 @@ function Employee(props) {
           <p>Employee record will be deleted from the system.</p>
         </>
       ),
-      onOk: () => {
-        deleteEmployeeThunk(record._id);
-        message.success("Employee is removed.", 1.5);
+      onOk: async () => {
+        let result = await deleteEmployeeThunk(record._id);
+        if (typeof result["data"]["deletedEmployee"] != "undefined") {
+          message.success("Employee is removed.", 1.5);
+        } else {
+          message.error("An error occurred.");
+        }
+
         closeModal();
       },
       onCancel: closeModal,
     });
+  };
+
+  const generateEmpId = () => {
+    let newEmp = `PIC/00${employeeCount + 1}`;
+
+    return newEmp;
   };
 
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;

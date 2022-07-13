@@ -140,9 +140,14 @@ function Designations() {
           <p>Designation record will be deleted from the system.</p>
         </>
       ),
-      onOk: () => {
-        deleteDesignationThunk(record._id);
-        message.success("Designation is removed.", 1.5);
+      onOk: async () => {
+        let result = await deleteDesignationThunk(record._id);
+        if (typeof result["data"]["deletedDesignation"] != "undefined") {
+          message.success("Designation is removed.", 1.5);
+        } else {
+          message.error("An error occured");
+        }
+
         closeModal();
       },
       onCancel: closeModal,

@@ -241,18 +241,7 @@ function SalarySlips(props) {
                 </Form.Item>
               </Col>
             </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item name="bonus" label="Bonus">
-                  <InputNumber style={{ width: "100%" }}></InputNumber>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item name="reductions" label="Reductions">
-                  <InputNumber style={{ width: "100%" }}></InputNumber>
-                </Form.Item>
-              </Col>
-            </Row>
+            
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item>
