@@ -75,7 +75,11 @@ const DesignationsStore = {
 
     try {
       let result = await addDesignationsData(data);
-      action.pushDesignationsAction(result["data"]["createdDesignation"]);
+      if (typeof result["data"]["createdDesignation"] != "undefined")
+        action.pushDesignationsAction(result["data"]["createdDesignation"]);
+
+      action.setIsDesgLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -87,7 +91,11 @@ const DesignationsStore = {
 
     try {
       let result = await updateDesignationsData(data);
-      action.updateDesignationsAction(result["data"]["updatedDesignation"]);
+      if (typeof result["data"]["updatedDesignation"] != "undefined")
+        action.updateDesignationsAction(result["data"]["updatedDesignation"]);
+
+      action.setIsDesgLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -99,7 +107,13 @@ const DesignationsStore = {
 
     try {
       let result = await deleteDesignationsData(id);
-      action.popDesignationsAction(result["data"]["deletedDesignation"]["_id"]);
+      if (typeof result["data"]["deletedDesignation"] != "undefined")
+        action.popDesignationsAction(
+          result["data"]["deletedDesignation"]["_id"]
+        );
+
+      action.setIsDesgLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }

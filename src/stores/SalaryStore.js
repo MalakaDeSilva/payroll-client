@@ -103,7 +103,10 @@ const SalaryStore = {
 
     try {
       let result = await addSalaryData(data);
-      action.pushSalariesAction(result["data"]["createdSalary"]);
+      if (typeof result["data"]["createdSalary"] != "undefined")
+        action.pushSalariesAction(result["data"]["createdSalary"]);
+
+      action.setIsSalariesLoadingAction();
       return result;
     } catch (e) {
       action.setErrorAction(e.message);
@@ -116,7 +119,11 @@ const SalaryStore = {
 
     try {
       let result = await updateSalaryData(data);
-      action.updateSalariesAction(result["data"]["updatedSalary"]);
+      if (typeof result["data"]["updatedSalary"] != "undefined")
+        action.updateSalariesAction(result["data"]["updatedSalary"]);
+
+      action.setIsSalariesLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -128,7 +135,11 @@ const SalaryStore = {
 
     try {
       let result = await deleteSalaryData(id);
-      action.popSalariesAction(result["data"]["deletedSalary"]["_id"]);
+      if (typeof result["data"]["deletedSalary"] != "undefined")
+        action.popSalariesAction(result["data"]["deletedSalary"]["_id"]);
+
+      action.setIsSalariesLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }

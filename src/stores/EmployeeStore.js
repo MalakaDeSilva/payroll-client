@@ -23,7 +23,7 @@ const EmployeeStore = {
   }),
   setEmployeesAction: action((state, employees) => {
     state.employees = employees;
-    state.employeeCount = employees.length
+    state.employeeCount = employees.length;
   }),
   pushEmployeesAction: action((state, employee) => {
     state.employees.push(employee);
@@ -64,11 +64,14 @@ const EmployeeStore = {
 
     try {
       let result = await addEmployeeData(data);
-      action.pushEmployeesAction(result["data"]["createdEmployee"]); // TODO: check result before pushing
+      if (typeof result["data"]["createdEmployee"] != "undefined")
+        action.pushEmployeesAction(result["data"]["createdEmployee"]);
+
+      action.setIsEmpLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
-
     action.setIsEmpLoadingAction();
   }),
   updateEmployeeThunk: thunk(async (action, data) => {
@@ -76,23 +79,29 @@ const EmployeeStore = {
 
     try {
       let result = await updateEmployeeData(data);
-      action.updateEmployeeAction(result["data"]["updatedEmployee"]);
+      if (typeof result["data"]["updatedEmployee"] != "undefined")
+        action.updateEmployeeAction(result["data"]["updatedEmployee"]);
+
+      action.setIsEmpLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
-
     action.setIsEmpLoadingAction();
   }),
   deleteEmployeeThunk: thunk(async (action, id) => {
     action.setIsEmpLoadingAction();
 
     try {
-      await deleteEmployeeData(id);
-      action.popEmployeesAction(id); // TODO: check result before popping
+      let result = await deleteEmployeeData(id);
+      if (typeof result["data"]["deletedEmployee"] != "undefined")
+        action.popEmployeesAction(id); // TODO: check result before popping
+
+      action.setIsEmpLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
-
     action.setIsEmpLoadingAction();
   }),
 };

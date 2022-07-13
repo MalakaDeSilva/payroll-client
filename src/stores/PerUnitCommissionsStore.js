@@ -74,7 +74,11 @@ const PerUnitCommissionsStore = {
 
     try {
       let result = await addCommissionsData(data);
-      action.pushCommissionAction(result["data"]["createdCommission"]);
+      if (typeof result["data"]["createdCommission"] != "undefined")
+        action.pushCommissionAction(result["data"]["createdCommission"]);
+
+      action.setIsComLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -86,7 +90,11 @@ const PerUnitCommissionsStore = {
 
     try {
       let result = await updateCommissionsData(data);
-      action.updateCommissionAction(result["data"]["updatedCommission"]);
+      if (typeof result["data"]["updatedCommission"] != "undefined")
+        action.updateCommissionAction(result["data"]["updatedCommission"]);
+
+      action.setIsComLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
@@ -97,8 +105,12 @@ const PerUnitCommissionsStore = {
     action.setIsComLoadingAction();
 
     try {
-      await deleteCommissionsData(id);
-      action.popCommissionAction(id);
+      let result = await deleteCommissionsData(id);
+      if (typeof result["data"]["deletedCommission"] != "undefined")
+        action.popCommissionAction(id);
+
+      action.setIsComLoadingAction();
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
