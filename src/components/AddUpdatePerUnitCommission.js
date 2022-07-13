@@ -139,11 +139,12 @@ function NewPerUnitCommission(props) {
             <Form.Item
               name="units"
               label="Units"
+              initialValue={1}
               rules={[
                 { required: true, message: "Please enter amount of Units." },
               ]}
             >
-              <InputNumber min={1} defaultValue={1} />
+              <InputNumber min={1} />
             </Form.Item>
           </Col>
         </Row>
