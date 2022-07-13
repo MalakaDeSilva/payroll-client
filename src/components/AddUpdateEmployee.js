@@ -99,7 +99,8 @@ function AddUpdateEmployee(props) {
         name: emp.name,
         employeeId: emp.employeeId,
         email: emp.email,
-        joinedDate: emp.joinedDate,
+        dob: new Date(emp.dob).toLocaleDateString("en-CA"),
+        date: new Date(emp.joinedDate).toLocaleDateString("en-CA"),
         designation: emp.designation,
         salary: parseFloat(emp.salary),
         phone: emp.phone,
@@ -147,13 +148,24 @@ function AddUpdateEmployee(props) {
           hideRequiredMark
         >
           <Row gutter={16}>
-            <Col span={14}>
+            <Col span={24}>
               <Form.Item
                 name="name"
                 label="Name"
                 rules={[{ required: true, message: "Please enter name." }]}
               >
                 <Input placeholder="Please enter name" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={14}>
+              <Form.Item
+                name="email"
+                label="Email"
+                rules={[{ required: true, message: "Please enter email." }]}
+              >
+                <Input placeholder="Please enter email" type={"email"} />
               </Form.Item>
             </Col>
             <Col span={10}>
@@ -169,16 +181,18 @@ function AddUpdateEmployee(props) {
             </Col>
           </Row>
           <Row gutter={16}>
-            <Col span={14}>
+            <Col span={12}>
               <Form.Item
-                name="email"
-                label="Email"
-                rules={[{ required: true, message: "Please enter email." }]}
+                name="dob"
+                label="Date of Birth"
+                rules={[
+                  { required: true, message: "Please enter Date of Birth." },
+                ]}
               >
-                <Input placeholder="Please enter email" type={"email"} />
+                <Input placeholder="Please enter Date of Birth" type={"date"} />
               </Form.Item>
             </Col>
-            <Col span={10}>
+            <Col span={12}>
               <Form.Item
                 name="date"
                 label="Joined Date"
