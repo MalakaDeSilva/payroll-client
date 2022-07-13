@@ -104,6 +104,7 @@ const SalaryStore = {
     try {
       let result = await addSalaryData(data);
       action.pushSalariesAction(result["data"]["createdSalary"]);
+      return result;
     } catch (e) {
       action.setErrorAction(e.message);
     }
