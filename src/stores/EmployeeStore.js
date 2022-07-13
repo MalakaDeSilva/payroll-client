@@ -1,4 +1,4 @@
-import { action, thunk } from "easy-peasy";
+import { action, computed, thunk } from "easy-peasy";
 import {
   getEmployeeData,
   addEmployeeData,
@@ -12,6 +12,7 @@ const EmployeeStore = {
   employees: [],
   error: "",
   drawerVisible: false,
+  employeeCount: computed((state) => state.employees.length),
 
   /* actions */
   setIsEmpLoadingAction: action((state) => {
@@ -22,6 +23,7 @@ const EmployeeStore = {
   }),
   setEmployeesAction: action((state, employees) => {
     state.employees = employees;
+    state.employeeCount = employees.length
   }),
   pushEmployeesAction: action((state, employee) => {
     state.employees.push(employee);
