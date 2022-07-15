@@ -13,17 +13,20 @@ import {
   Tooltip,
   Form,
   Breadcrumb,
+  Tag,
 } from "antd";
 import {
   LoadingOutlined,
   AuditOutlined,
   FormOutlined,
 } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getPayCycle } from "../util/Utils";
 import { Link } from "react-router-dom";
 
 function SalarySlips(props) {
+  const [selected, setSelected] = useState([]);
+
   let date = new Date();
 
   const { Option } = Select;
@@ -69,6 +72,22 @@ function SalarySlips(props) {
       dataIndex: "grossSalary",
       key: "grossSalary",
       render: (data) => <Space size="middle">{data.toFixed(2)}</Space>,
+    },
+    {
+      title: "Payment",
+      dataIndex: "paid",
+      key: "paid",
+      render: (data) => {
+        if (data === "pending") {
+          return <Tag color="grey">Pending</Tag>;
+        } else if (data === "paid") {
+          return <Tag color="green">Paid</Tag>;
+        } else if (data === "cancelled") {
+          return <Tag color="red">Cancelled</Tag>;
+        } else {
+          return "";
+        }
+      },
     },
     {
       title: "Net Salary (LKR)",
@@ -241,7 +260,7 @@ function SalarySlips(props) {
                 </Form.Item>
               </Col>
             </Row>
-            
+
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item>
@@ -282,6 +301,37 @@ function SalarySlips(props) {
     Modal.destroyAll();
   };
 
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      let _selected = [];
+      selectedRows.forEach((e) => {
+        e["key"] = e["_id"];
+        e["generated"] = "";
+
+        _selected.push(e);
+      });
+
+      setSelected(_selected);
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === "Disabled User",
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+
+  const markAsPaid = () => {
+    selected.forEach((e) => {
+      let values = {
+        _id: e["_id"],
+        employeeId: e["employeeId"],
+        payCycle: e["payCycle"],
+        paid: "paid",
+      };
+      updateSalaryThunk(values);
+    });
+  };
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   return (
@@ -303,12 +353,26 @@ function SalarySlips(props) {
       <Card
         title="Payslips"
         style={{ margin: "20px", borderRadius: "15px" }}
-        extra={<Button onClick={setPayCycleFilter}>Pay Cycle</Button>}
+        extra={
+          <div>
+            <Button onClick={markAsPaid} style={{ marginRight: "5px" }}>
+              Mark As Paid
+            </Button>
+            <Button onClick={setPayCycleFilter}>Pay Cycle</Button>
+          </div>
+        }
       >
         {isSalariesLoading ? (
           <Spin indicator={antIcon} />
         ) : (
-          <Table columns={columns} dataSource={getData()} />
+          <Table
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
+            columns={columns}
+            dataSource={getData()}
+          />
         )}
       </Card>
     </div>
