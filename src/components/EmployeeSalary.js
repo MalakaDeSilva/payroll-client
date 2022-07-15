@@ -14,14 +14,17 @@ import {
   Form,
   Breadcrumb,
   message,
+  Tag,
 } from "antd";
 import { LoadingOutlined, AuditOutlined } from "@ant-design/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getPayCycle } from "../util/Utils";
 
 function EmployeeSalary(props) {
   const { Option } = Select;
+  const [visible, setVisible] = useState(false);
+  const [selected, setSelected] = useState([]);
 
   // eslint-disable-next-line
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
@@ -81,6 +84,34 @@ function EmployeeSalary(props) {
           </Space>
         </Tooltip>
       ),
+    },
+  ];
+
+  const salColumns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Designation",
+      dataIndex: "designation",
+      key: "designation",
+      render: (data) => <Space size="middle">{getDesignation(data)}</Space>,
+    },
+    {
+      title: "Slip Generated",
+      dataIndex: "generated",
+      key: "generated",
+      render: (data) => {
+        if (data) {
+          return <Tag color="green">Success</Tag>;
+        } else if (data === "") {
+          return <Tag color="grey">Pending</Tag>;
+        } else {
+          return <Tag color="red">Failed</Tag>;
+        }
+      },
     },
   ];
 
@@ -145,11 +176,15 @@ function EmployeeSalary(props) {
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
+      let _selected = [];
+      selectedRows.forEach((e) => {
+        e["key"] = e["_id"];
+        e["generated"] = "";
+
+        _selected.push(e);
+      });
+
+      setSelected(_selected);
     },
     getCheckboxProps: (record) => ({
       disabled: record.name === "Disabled User",
@@ -245,6 +280,137 @@ function EmployeeSalary(props) {
     Modal.destroyAll();
   };
 
+  const generateMultiple = async (_values) => {
+    let _payCycle = getPayCycle(_values["year"], _values["month"]);
+    selected.forEach(async (e) => {
+      _values = {
+        employeeId: e["employeeId"],
+        payCycle: _payCycle,
+      };
+
+      try {
+        let result = await addSalaryThunk(_values);
+        if (typeof result["data"]["error"] == "undefined") {
+          e["generated"] = true;
+
+          setSelected(
+            selected.map((ele) => {
+              if (ele._id === e._id) {
+                ele["generated"] = true;
+              }
+
+              return ele;
+            })
+          );
+        } else {
+          e["generated"] = false;
+          setSelected(
+            selected.map((ele) => {
+              if (ele._id === e._id) {
+                ele["generated"] = false;
+              }
+
+              return ele;
+            })
+          );
+        }
+      } catch (ex) {
+        e["generated"] = false;
+        setSelected(
+          selected.map((ele) => {
+            if (ele._id === e._id) {
+              ele["generated"] = false;
+            }
+
+            return ele;
+          })
+        );
+      }
+    });
+  };
+
+  const generateModal = (
+    <Modal
+      title={"Generate Salary Slips"}
+      visible={visible}
+      width={1000}
+      onCancel={() => setVisible(false)}
+      footer={[]}
+    >
+      <div>
+        <Form layout="vertical" onFinish={(values) => generateMultiple(values)}>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="year"
+                label="Year"
+                initialValue={new Date().getFullYear()}
+              >
+                <InputNumber style={{ width: "100%" }}></InputNumber>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="month"
+                label="Month"
+                initialValue={new Date().getMonth().toString()}
+              >
+                <Select style={{ width: "100%" }}>
+                  <Option value="0">January</Option>
+                  <Option value="1">February</Option>
+                  <Option value="2">March</Option>
+                  <Option value="3">April</Option>
+                  <Option value="4">May</Option>
+                  <Option value="5">June</Option>
+                  <Option value="6">July</Option>
+                  <Option value="7">August</Option>
+                  <Option value="8">September</Option>
+                  <Option value="9">October</Option>
+                  <Option value="10">November</Option>
+                  <Option value="11">December</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={5} offset={19} >
+              <Form.Item>
+                <Space>
+                  <Button type="primary" htmlType="submit">
+                    Generate
+                  </Button>
+                  <Button
+                    type="default"
+                    htmlType="button"
+                    onClick={() => Modal.destroyAll()}
+                  >
+                    Cancel
+                  </Button>
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+        <div
+          style={{
+            height: "250",
+            overflow: "auto",
+          }}
+        ></div>
+        <Table
+          columns={salColumns}
+          dataSource={[...selected]}
+          pagination={{
+            pageSize: 50,
+          }}
+          scroll={{
+            y: 300,
+          }}
+        />
+      </div>
+    </Modal>
+  );
+
   const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
   return (
@@ -263,7 +429,16 @@ function EmployeeSalary(props) {
           <Link to="/employee-salary">Employee Salary</Link>
         </Breadcrumb.Item>
       </Breadcrumb>
-      <Card title="Salaries" style={{ margin: "20px", borderRadius: "15px" }}>
+      <Card
+        title="Salaries"
+        style={{ margin: "20px", borderRadius: "15px" }}
+        extra={
+          <Button type="primary" onClick={() => setVisible(true)}>
+            Generate Slips
+          </Button>
+        }
+      >
+        {generateModal}
         {isEmpLoading ? (
           <Spin indicator={antIcon} />
         ) : (
