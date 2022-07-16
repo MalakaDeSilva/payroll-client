@@ -1,4 +1,4 @@
-import { action, thunk } from "easy-peasy";
+import { action, computed, thunk } from "easy-peasy";
 import {
   getCommissionsData,
   addCommissionsData,
@@ -12,6 +12,9 @@ const FixedCommissionsStore = {
   commissions: [],
   error: "",
   drawerVisible: false,
+  payCycles: computed((state) => [
+    ...new Set(state.commissions.map((item) => item.payCycle)),
+  ]),
 
   /* actions */
   setIsComLoadingAction: action((state) => {
@@ -45,19 +48,7 @@ const FixedCommissionsStore = {
   }),
 
   /* thunks */
-  getCommissionsByUserIdPayCycleThunk: thunk(async (action, _data) => {
-    action.setIsComLoadingAction();
-
-    try {
-      let { data } = await getCommissionsData(_data);
-      action.setCommissionsAction(data);
-    } catch (e) {
-      action.setErrorAction(e.message);
-    }
-
-    action.setIsComLoadingAction();
-  }),
-  getCommissionsByPayCycleThunk: thunk(async (action, _data) => {
+  getCommissionsThunk: thunk(async (action, _data) => {
     action.setIsComLoadingAction();
 
     try {
