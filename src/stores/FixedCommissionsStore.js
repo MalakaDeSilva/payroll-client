@@ -8,12 +8,22 @@ import {
 
 const FixedCommissionsStore = {
   /* states */
+  init: true,
+  payCycles: [],
   isComLoading: false,
   commissions: [],
   error: "",
   drawerVisible: false,
 
   /* actions */
+  setInitAction: action((state) => {
+    state.init = false;
+  }),
+  setPayCyclesAction: action((state, commissions) => {
+    if (state.init) {
+      state.payCycles = [...new Set(commissions.map((item) => item.payCycle))];
+    }
+  }),
   setIsComLoadingAction: action((state) => {
     state.isComLoading = !state.isComLoading;
   }),
@@ -45,28 +55,19 @@ const FixedCommissionsStore = {
   }),
 
   /* thunks */
-  getCommissionsByUserIdPayCycleThunk: thunk(async (action, _data) => {
+  getCommissionsThunk: thunk(async (action, _data) => {
     action.setIsComLoadingAction();
 
     try {
       let { data } = await getCommissionsData(_data);
       action.setCommissionsAction(data);
+
+      action.setPayCyclesAction(data);
     } catch (e) {
       action.setErrorAction(e.message);
     }
 
-    action.setIsComLoadingAction();
-  }),
-  getCommissionsByPayCycleThunk: thunk(async (action, _data) => {
-    action.setIsComLoadingAction();
-
-    try {
-      let { data } = await getCommissionsData(_data);
-      action.setCommissionsAction(data);
-    } catch (e) {
-      action.setErrorAction(e.message);
-    }
-
+    action.setInitAction();
     action.setIsComLoadingAction();
   }),
   addCommissionsThunk: thunk(async (action, data) => {

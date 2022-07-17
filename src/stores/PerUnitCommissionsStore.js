@@ -8,12 +8,24 @@ import {
 
 const PerUnitCommissionsStore = {
   /* states */
+  init: true,
+  payCycles: [],
   isPUComLoading: false,
   puCommissions: [],
   error: "",
   drawerVisible: false,
 
   /* actions */
+  setInitAction: action((state) => {
+    state.init = false;
+  }),
+  setPayCyclesAction: action((state, puCommissions) => {
+    if (state.init) {
+      state.payCycles = [
+        ...new Set(puCommissions.map((item) => item.payCycle)),
+      ];
+    }
+  }),
   setIsComLoadingAction: action((state) => {
     state.isPUComLoading = !state.isPUComLoading;
   }),
@@ -45,28 +57,18 @@ const PerUnitCommissionsStore = {
   }),
 
   /* thunks */
-  getCommissionsByUserIdPayCycleThunk: thunk(async (action, _data) => {
+  getCommissionsThunk: thunk(async (action, _data) => {
     action.setIsComLoadingAction();
 
     try {
       let { data } = await getCommissionsData(_data);
       action.setCommissionsAction(data);
+
+      action.setPayCyclesAction(data);
     } catch (e) {
       action.setErrorAction(e.message);
     }
-
-    action.setIsComLoadingAction();
-  }),
-  getCommissionsByPayCycleThunk: thunk(async (action, _data) => {
-    action.setIsComLoadingAction();
-
-    try {
-      let { data } = await getCommissionsData(_data);
-      action.setCommissionsAction(data);
-    } catch (e) {
-      action.setErrorAction(e.message);
-    }
-
+    action.setInitAction();
     action.setIsComLoadingAction();
   }),
   addCommissionsThunk: thunk(async (action, data) => {

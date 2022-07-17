@@ -27,22 +27,20 @@ function FixedCommissions(props) {
   const [title, setTitle] = useState("New Commission");
   const [commission, setCommission] = useState({});
   const [action, setAction] = useState("ADD");
-
-  let dataPayCycle = { payCycle: "2022JUN" };
+  const [filter, setFilter] = useState({
+    userId: "all",
+    payCycle: "all",
+  });
 
   const { Option } = Select;
   const { Title, Text } = Typography;
 
-  const { commissions, isComLoading, drawerVisible } = useStoreState(
+  const { commissions, isComLoading, drawerVisible, payCycles } = useStoreState(
     (state) => state.fixedCommissions
   );
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
-  const {
-    getCommissionsByUserIdPayCycleThunk,
-    getCommissionsByPayCycleThunk,
-    deleteCommissionsThunk,
-    actionDrawer,
-  } = useStoreActions((actions) => actions.fixedCommissions);
+  const { getCommissionsThunk, deleteCommissionsThunk, actionDrawer } =
+    useStoreActions((actions) => actions.fixedCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
 
   const columns = [
@@ -93,8 +91,8 @@ function FixedCommissions(props) {
 
   useEffect(() => {
     getEmployeesThunk();
-    getCommissionsByPayCycleThunk(dataPayCycle); // eslint-disable-next-line
-  }, []);
+    getCommissionsThunk(filter);
+  }, [getEmployeesThunk, getCommissionsThunk, filter]);
 
   const getData = () => {
     let _commissions = [];
@@ -106,16 +104,11 @@ function FixedCommissions(props) {
     return _commissions;
   };
 
-  const handleChange = (value) => {
-    let data = {
-      payCycle: "2022JUN",
-    };
-
-    if (value === "all") {
-      getCommissionsByPayCycleThunk(dataPayCycle);
-    } else {
-      data = { ...data, userId: value };
-      getCommissionsByUserIdPayCycleThunk(data);
+  const handleChange = (value, _filter) => {
+    if (_filter === "EMPLOYEEID") {
+      setFilter({ ...filter, userId: value });
+    } else if (_filter === "PAYCYCLE") {
+      setFilter({ ...filter, payCycle: value });
     }
   };
 
@@ -123,11 +116,11 @@ function FixedCommissions(props) {
     return (
       <Select
         defaultValue="all"
-        onChange={handleChange}
+        onChange={(v) => handleChange(v, "EMPLOYEEID")}
         style={{ width: 140, marginRight: "5px" }}
       >
         <Option value="all" key="all">
-          All Employees
+          Employee
         </Option>
         {isEmpLoading
           ? ""
@@ -142,6 +135,29 @@ function FixedCommissions(props) {
     );
   };
 
+  const getPayCycleSelector = () => {
+    return (
+      <Select
+        defaultValue="all"
+        onChange={(v) => handleChange(v, "PAYCYCLE")}
+        style={{ width: 140, marginRight: "5px" }}
+      >
+        <Option value="all" key="all">
+          Pay Cycle
+        </Option>
+        {isComLoading
+          ? ""
+          : payCycles.map((element, index) => {
+              return (
+                <Option value={element} key={element}>
+                  {element}
+                </Option>
+              );
+            })}
+      </Select>
+    );
+  };
+
   const getEmployeeName = (empId) => {
     return isEmpLoading || employees.length <= 0
       ? ""
@@ -149,8 +165,6 @@ function FixedCommissions(props) {
   };
 
   const updateCommission = (commission) => {
-    // useStoreActions((actions) => actions.employees.setEmployeeAction(emp));
-    // setEmployeeAction(emp);
     setCommission(commission);
     setAction("UPDATE");
     setTitle("Update Commission");
@@ -229,6 +243,7 @@ function FixedCommissions(props) {
         extra={
           <div>
             {getEmployeeSelector()}
+            {getPayCycleSelector()}
             <Tooltip title="New Commission">
               <Button
                 type="primary"
