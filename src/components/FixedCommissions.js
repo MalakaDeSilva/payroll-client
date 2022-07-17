@@ -22,17 +22,14 @@ import {
 import React, { useEffect, useState } from "react";
 
 import AddUpdateFixedCommission from "./AddUpdateFixedCommission";
-import { getPayCycle } from "../util/Utils";
 
 function FixedCommissions(props) {
-  let dataPayCycle = getPayCycle();
-
   const [title, setTitle] = useState("New Commission");
   const [commission, setCommission] = useState({});
   const [action, setAction] = useState("ADD");
   const [filter, setFilter] = useState({
     userId: "all",
-    payCycle: dataPayCycle,
+    payCycle: "all",
   });
 
   const { Option } = Select;
@@ -42,11 +39,8 @@ function FixedCommissions(props) {
     (state) => state.fixedCommissions
   );
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
-  const {
-    getCommissionsThunk,
-    deleteCommissionsThunk,
-    actionDrawer,
-  } = useStoreActions((actions) => actions.fixedCommissions);
+  const { getCommissionsThunk, deleteCommissionsThunk, actionDrawer } =
+    useStoreActions((actions) => actions.fixedCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
 
   const columns = [
@@ -126,7 +120,7 @@ function FixedCommissions(props) {
         style={{ width: 140, marginRight: "5px" }}
       >
         <Option value="all" key="all">
-          All Employees
+          Employee
         </Option>
         {isEmpLoading
           ? ""
@@ -144,10 +138,13 @@ function FixedCommissions(props) {
   const getPayCycleSelector = () => {
     return (
       <Select
-        defaultValue={dataPayCycle}
+        defaultValue="all"
         onChange={(v) => handleChange(v, "PAYCYCLE")}
         style={{ width: 140, marginRight: "5px" }}
       >
+        <Option value="all" key="all">
+          Pay Cycle
+        </Option>
         {isComLoading
           ? ""
           : payCycles.map((element, index) => {

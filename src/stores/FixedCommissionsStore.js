@@ -1,4 +1,4 @@
-import { action, computed, thunk } from "easy-peasy";
+import { action, thunk } from "easy-peasy";
 import {
   getCommissionsData,
   addCommissionsData,
@@ -8,15 +8,22 @@ import {
 
 const FixedCommissionsStore = {
   /* states */
+  init: true,
+  payCycles: [],
   isComLoading: false,
   commissions: [],
   error: "",
   drawerVisible: false,
-  payCycles: computed((state) => [
-    ...new Set(state.commissions.map((item) => item.payCycle)),
-  ]),
 
   /* actions */
+  setInitAction: action((state) => {
+    state.init = false;
+  }),
+  setPayCyclesAction: action((state, commissions) => {
+    if (state.init) {
+      state.payCycles = [...new Set(commissions.map((item) => item.payCycle))];
+    }
+  }),
   setIsComLoadingAction: action((state) => {
     state.isComLoading = !state.isComLoading;
   }),
@@ -54,10 +61,13 @@ const FixedCommissionsStore = {
     try {
       let { data } = await getCommissionsData(_data);
       action.setCommissionsAction(data);
+
+      action.setPayCyclesAction(data);
     } catch (e) {
       action.setErrorAction(e.message);
     }
 
+    action.setInitAction();
     action.setIsComLoadingAction();
   }),
   addCommissionsThunk: thunk(async (action, data) => {

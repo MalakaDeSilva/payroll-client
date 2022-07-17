@@ -3,10 +3,16 @@ import axios from "axios";
 const baseURL = process.env.REACT_APP_BASE_URL;
 
 export async function getCommissionsData(data) {
-  if (data["userId"] === "all") {
-    return await axios.get(`${baseURL}/fixed-commissions/${data["payCycle"]}`);
-  } else {
-    return await axios.get(`${baseURL}/fixed-commissions/${data["userId"]}/${data["payCycle"]}`);
+  if (data["userId"] === "all" && data["payCycle"] === "all") {
+    return await axios.get(`${baseURL}/fixed-commissions/`);
+  } else if (data["userId"] !== "all" && data["payCycle"] !== "all") {
+    return await axios.get(
+      `${baseURL}/fixed-commissions/by-emp-pc/${data["userId"]}/${data["payCycle"]}`
+    );
+  } else if (data["userId"] === "all" && data["payCycle"] !== "all") {
+    return await axios.get(`${baseURL}/fixed-commissions/by-pay-cycle/${data["payCycle"]}`);
+  } else if (data["userId"] !== "all" && data["payCycle"] === "all") {
+    return await axios.get(`${baseURL}/fixed-commissions/by-emp-id/${data["userId"]}`);
   }
 }
 
