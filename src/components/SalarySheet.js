@@ -76,7 +76,7 @@ function SalarySheet(props) {
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
-      link.download = `your-file-name.pdf`;
+      link.download = `${empId} - ${payCycle}.pdf`;
       link.click();
     });
   };
