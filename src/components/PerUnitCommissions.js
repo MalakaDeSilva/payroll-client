@@ -110,22 +110,28 @@ function PerUnitCommissions(props) {
 
   const handleChange = (value, _filter) => {
     if (_filter === "EMPLOYEEID") {
-      setFilter({ ...filter, userId: value });
+      if (typeof value === "undefined") {
+        setFilter({ ...filter, userId: "all" });
+      } else {
+        setFilter({ ...filter, userId: value });
+      }
     } else if (_filter === "PAYCYCLE") {
-      setFilter({ ...filter, payCycle: value });
+      if (typeof value === "undefined") {
+        setFilter({ ...filter, payCycle: "all" });
+      } else {
+        setFilter({ ...filter, payCycle: value });
+      }
     }
   };
 
   const getEmployeeSelector = () => {
     return (
       <Select
-        defaultValue="all"
+        placeholder={"Employee"}
+        allowClear={true}
         onChange={(v) => handleChange(v, "EMPLOYEEID")}
         style={{ width: 140, marginRight: "5px" }}
       >
-        <Option value="all" key="all">
-          All Employees
-        </Option>
         {isEmpLoading
           ? ""
           : employees.map((element, index) => {
@@ -142,13 +148,11 @@ function PerUnitCommissions(props) {
   const getPayCycleSelector = () => {
     return (
       <Select
-        defaultValue="all"
+        placeholder={"Pay Cycle"}
+        allowClear={true}
         onChange={(v) => handleChange(v, "PAYCYCLE")}
         style={{ width: 140, marginRight: "5px" }}
       >
-        <Option value="all" key="all">
-          All Pay Cycles
-        </Option>
         {isPUComLoading
           ? ""
           : payCycles.map((element, index) => {
