@@ -1,7 +1,16 @@
 import { Col, Row } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Overview() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
     <div>
       <Row gutter={16}>
