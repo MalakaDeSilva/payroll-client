@@ -1,16 +1,37 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Col, Form, Input, Row, Typography } from "antd";
-import React from "react";
+import {
+  Button,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  Row,
+  Typography,
+  Alert,
+} from "antd";
+import React, { useEffect, useState } from "react";
 import { useStoreActions } from "easy-peasy";
+import { useNavigate } from "react-router-dom";
 
 function Login(props) {
+  const navigate = useNavigate();
   const { loginThunk } = useStoreActions((actions) => actions.auth);
+  const [error, setError] = useState("");
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
-    let result = await loginThunk(values);
-    console.log(result);
+    let output = await loginThunk(values);
+    if (output["result"]) {
+      navigate("/");
+    } else {
+      setError(output["data"]["error"]);
+    }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const { Title } = Typography;
 
@@ -35,6 +56,11 @@ function Login(props) {
             }}
             onFinish={onFinish}
           >
+            <Row gutter={16} style={{ paddingBottom: "20px" }}>
+              <Col span={24}>
+                {error ? <Alert message={error} type="error" /> : ""}
+              </Col>
+            </Row>
             <Row gutter={16}>
               <Col span={24}>
                 <Form.Item
