@@ -20,6 +20,7 @@ import Overview from "./common/Overview";
 import EmployeeSalary from "./components/EmployeeSalary";
 import SalarySlips from "./components/SalarySlips";
 import SalarySheet from "./components/SalarySheet";
+import PermissionError from "./common/PermissionError";
 
 import SideBar from "./common/SideBar";
 
@@ -54,6 +55,7 @@ function App() {
                 path="/salary-slips/salary-sheet/:empId/:payCycle"
                 element={<SalarySheet />}
               />
+              <Route path="permission-error" element={<PermissionError />} />
             </Route>
           </Routes>
         </BrowserRouter>
