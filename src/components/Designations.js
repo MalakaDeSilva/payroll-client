@@ -20,7 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AddUpdateDesignation from "./AddUpdateDesignation";
 
@@ -28,6 +28,7 @@ function Designations() {
   const [title, setTitle] = useState("New Designation");
   const [desg, setDesg] = useState({});
   const [action, setAction] = useState("ADD");
+  const navigate = useNavigate();
 
   const { Title, Text } = Typography;
 
@@ -37,6 +38,9 @@ function Designations() {
   const { getDesignationsThunk, deleteDesignationThunk, actionDrawer } =
     useStoreActions((actions) => actions.designations);
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getDesignationsThunk(); // eslint-disable-next-line
   }, []);
 

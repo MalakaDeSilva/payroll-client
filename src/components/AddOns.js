@@ -25,7 +25,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AddUpdateAddOn from "./AddUpdateAddOn";
 import { getPayCycle } from "../util/Utils";
@@ -34,6 +34,7 @@ function AddOns() {
   const [title, setTitle] = useState("New Add On");
   const [addOn, setAddOn] = useState({});
   const [action, setAction] = useState("ADD");
+  const navigate = useNavigate();
 
   const { Title, Text } = Typography;
   const { Option } = Select;
@@ -49,6 +50,9 @@ function AddOns() {
     useStoreActions((actions) => actions.addOns);
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getAddOnsByPayCycleThunk(data);
     getEmployeesThunk(); // eslint-disable-next-line
   }, []);

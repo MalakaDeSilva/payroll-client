@@ -20,6 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AddUpdatePerUnitCommission from "./AddUpdatePerUnitCommission";
 
@@ -31,6 +32,7 @@ function PerUnitCommissions(props) {
     userId: "all",
     payCycle: "all",
   });
+  const navigate = useNavigate();
 
   const { Option } = Select;
   const { Title, Text } = Typography;
@@ -94,9 +96,12 @@ function PerUnitCommissions(props) {
   ];
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getEmployeesThunk();
     getCommissionsThunk(filter);
-  }, [getEmployeesThunk, getCommissionsThunk, filter]);
+  }, [navigate, getEmployeesThunk, getCommissionsThunk, filter]);
 
   const getData = () => {
     let _commissions = [];

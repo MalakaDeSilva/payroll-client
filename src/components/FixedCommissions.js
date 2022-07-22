@@ -20,6 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AddUpdateFixedCommission from "./AddUpdateFixedCommission";
 
@@ -31,6 +32,7 @@ function FixedCommissions(props) {
     userId: "all",
     payCycle: "all",
   });
+  const navigate = useNavigate();
 
   const { Option } = Select;
   const { Title, Text } = Typography;
@@ -90,9 +92,12 @@ function FixedCommissions(props) {
   ];
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getEmployeesThunk();
     getCommissionsThunk(filter);
-  }, [getEmployeesThunk, getCommissionsThunk, filter]);
+  }, [navigate, getEmployeesThunk, getCommissionsThunk, filter]);
 
   const getData = () => {
     let _commissions = [];
