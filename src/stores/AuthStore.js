@@ -3,13 +3,9 @@ import { login, onAuthenticated } from "../services/AuthService";
 
 const AuthStore = {
   /* states */
-  isAuthenticated: false,
   user: {},
 
   /* actions */
-  setIsAuthenticated: action((state) => {
-    state.isAuthenticated = true;
-  }),
   setUser: action((state, user) => {
     state.user = user;
   }),
@@ -20,15 +16,14 @@ const AuthStore = {
       let result = await login(data);
       if (typeof result["data"]["token"] != "undefined") {
         action.setUser(result["data"]["user"][0]);
-        action.setIsAuthenticated();
         onAuthenticated(result["data"]["token"]);
-        
-        return { message: "Authentication successful." };
+
+        return { result: true, message: "Authentication successful." };
       } else {
-        return result;
+        return { ...result, result: false };
       }
     } catch (e) {
-      return { message: "Authentication failed." };
+      return { result: false, message: "Authentication failed." };
     }
   }),
 };
