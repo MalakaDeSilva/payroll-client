@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import { Row, Col, Card, Breadcrumb, Typography, Divider, Button } from "antd";
 import { PrinterOutlined } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { generateSlip } from "../services/SalaryService";
 
@@ -18,6 +18,7 @@ function SalarySheet(props) {
   const { empId, payCycle } = useParams();
   const { month, year } = getMonthYearFromPayCycle(payCycle);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   // eslint-disable-next-line
   const { employees, isEmpLoading } = useStoreState((state) => state.employees); // eslint-disable-next-line
@@ -38,6 +39,9 @@ function SalarySheet(props) {
   );
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getDesignationsThunk();
     getEmployeesThunk();
     getSalariesByEmpIdPayCycleThunk({ empId, payCycle }); // eslint-disable-next-line
@@ -76,7 +80,7 @@ function SalarySheet(props) {
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
-      link.download = `your-file-name.pdf`;
+      link.download = `${empId} - ${payCycle}.pdf`;
       link.click();
     });
   };

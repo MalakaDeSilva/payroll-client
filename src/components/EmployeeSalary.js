@@ -18,13 +18,14 @@ import {
 } from "antd";
 import { LoadingOutlined, AuditOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getPayCycle } from "../util/Utils";
 
 function EmployeeSalary(props) {
   const { Option } = Select;
   const [visible, setVisible] = useState(false);
   const [selected, setSelected] = useState([]);
+  const navigate = useNavigate();
 
   // eslint-disable-next-line
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
@@ -39,6 +40,9 @@ function EmployeeSalary(props) {
   );
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getDesignationsThunk();
     getEmployeesThunk(); // eslint-disable-next-line
   }, []);

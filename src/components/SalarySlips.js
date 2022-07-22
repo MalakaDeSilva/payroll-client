@@ -22,10 +22,11 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { getPayCycle } from "../util/Utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SalarySlips(props) {
   const [selected, setSelected] = useState([]);
+  const navigate = useNavigate();
 
   let date = new Date();
 
@@ -43,6 +44,9 @@ function SalarySlips(props) {
   );
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getSalariesByPayCycleThunk({
       payCycle: getPayCycle(date.getFullYear(), date.getMonth().toString()),
     });

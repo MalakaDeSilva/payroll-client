@@ -20,7 +20,7 @@ import {
   CloseCircleOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AddUpdateEmployee from "./AddUpdateEmployee";
 
@@ -28,6 +28,7 @@ function Employee(props) {
   const [title, setTitle] = useState("New Employee");
   const [emp, setEmp] = useState({});
   const [action, setAction] = useState("ADD");
+  const navigate = useNavigate();
 
   const { Title, Text } = Typography;
 
@@ -43,6 +44,9 @@ function Employee(props) {
   );
 
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/permission-error");
+    }
     getDesignationsThunk();
     getEmployeesThunk(); // eslint-disable-next-line
   }, []);
