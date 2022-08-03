@@ -40,9 +40,12 @@ function PerUnitCommissions(props) {
   const { puCommissions, isPUComLoading, drawerVisible, payCycles } =
     useStoreState((state) => state.perUnitCommissions);
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
+  const { verification } = useStoreState((state) => state.auth);
+
   const { getCommissionsThunk, deleteCommissionsThunk, actionDrawer } =
     useStoreActions((actions) => actions.perUnitCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
+  const { verifyThunk } = useStoreActions((actions) => actions.auth);
 
   const columns = [
     {
@@ -96,9 +99,15 @@ function PerUnitCommissions(props) {
   ];
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/permission-error");
+    if (Object.keys(verification).length === 0) {
+      verifyThunk();
     }
+    if (Object.keys(verification).length !== 0 && !verification["verified"]) {
+      navigate("/permission-error", {
+        state: { error: verification["reason"] },
+      });
+    }
+
     getEmployeesThunk();
     getCommissionsThunk(filter);
   }, [navigate, getEmployeesThunk, getCommissionsThunk, filter]);

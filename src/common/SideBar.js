@@ -1,13 +1,23 @@
 import { Layout, Menu } from "antd";
-import { UserOutlined, HomeOutlined, BankOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  HomeOutlined,
+  BankOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+
+import { useStoreActions } from "easy-peasy";
 
 function SideBar(props) {
   const { Content, Sider } = Layout;
   const { SubMenu } = Menu;
 
   const [collapsed, setCollapsed] = useState(false);
+  const navigate = useNavigate();
+
+  const { logOutThunk } = useStoreActions((actions) => actions.auth);
 
   const onCollapse = () => {
     setCollapsed(!collapsed);
@@ -43,6 +53,22 @@ function SideBar(props) {
               <Link to="/salary-slips">Payslips</Link>
             </Menu.Item>
           </SubMenu>
+          <Menu.Item
+            title=""
+            style={{
+              position: "absolute",
+              bottom: "48px",
+              zIndex: 1,
+            }}
+            key="8"
+            icon={<LogoutOutlined />}
+            onClick={(e) => {
+              logOutThunk();
+              navigate("/login");
+            }}
+          >
+            Log out
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout style={{ minHeight: "100vh" }}>

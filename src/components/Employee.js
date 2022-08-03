@@ -37,19 +37,28 @@ function Employee(props) {
   const { designations, isDesgLoading } = useStoreState(
     (state) => state.designations
   );
+  const { verification } = useStoreState((state) => state.auth);
+
   const { getEmployeesThunk, deleteEmployeeThunk, actionDrawer } =
     useStoreActions((actions) => actions.employees);
   const { getDesignationsThunk } = useStoreActions(
     (actions) => actions.designations
   );
+  const { verifyThunk } = useStoreActions((actions) => actions.auth);
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/permission-error");
+    if (Object.keys(verification).length === 0) {
+      verifyThunk();
     }
+    if (Object.keys(verification).length !== 0 && !verification["verified"]) {
+      navigate("/permission-error", {
+        state: { error: verification["reason"] },
+      });
+    }
+
     getDesignationsThunk();
     getEmployeesThunk(); // eslint-disable-next-line
-  }, []);
+  }, [verification]);
 
   const columns = [
     {

@@ -10,13 +10,18 @@ import {
   Alert,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { useNavigate } from "react-router-dom";
 
 function Login(props) {
   const navigate = useNavigate();
-  const { loginThunk } = useStoreActions((actions) => actions.auth);
   const [error, setError] = useState("");
+
+  const { verification } = useStoreState((state) => state.auth);
+
+  const { loginThunk, verifyThunk } = useStoreActions(
+    (actions) => actions.auth
+  );
 
   const onFinish = async (values) => {
     let output = await loginThunk(values);
@@ -27,11 +32,15 @@ function Login(props) {
     }
   };
 
+  
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (Object.keys(verification).length === 0) {
+      verifyThunk();
+    } // eslint-disable-next-line
+    if (Object.keys(verification).length !== 0 && verification["verified"]) {
       navigate("/");
-    }
-  }, [navigate]);
+    } // eslint-disable-next-line
+  }, [verification]);
 
   const { Title } = Typography;
 
