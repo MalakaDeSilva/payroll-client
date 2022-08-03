@@ -8,6 +8,12 @@ export async function login(data) {
 
 export function onAuthenticated(token) {
   localStorage.setItem("token", token);
+}
 
-  axiosIns.defaults.headers.common["Authorization"] = "Bearer " + token;
+export async function verify() {
+  return await axiosIns.post("/auth/verify");
+}
+
+export function logout() {
+  localStorage.removeItem("token");
 }

@@ -44,15 +44,24 @@ function AddOns() {
   const { addOns, isAddOnsLoading, drawerVisible } = useStoreState(
     (state) => state.addOns
   );
+  const { verification } = useStoreState((state) => state.auth);
+
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
   // eslint-disable-next-line
   const { getAddOnsByPayCycleThunk, actionDrawer, deleteAddOnThunk } =
     useStoreActions((actions) => actions.addOns);
+  const { verifyThunk } = useStoreActions((actions) => actions.auth);
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/permission-error");
+    if (Object.keys(verification).length === 0) {
+      verifyThunk();
     }
+    if (Object.keys(verification).length !== 0 && !verification["verified"]) {
+      navigate("/permission-error", {
+        state: { error: verification["reason"] },
+      });
+    }
+
     getAddOnsByPayCycleThunk(data);
     getEmployeesThunk(); // eslint-disable-next-line
   }, []);

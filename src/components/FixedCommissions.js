@@ -41,9 +41,12 @@ function FixedCommissions(props) {
     (state) => state.fixedCommissions
   );
   const { employees, isEmpLoading } = useStoreState((state) => state.employees);
+  const { verification } = useStoreState((state) => state.auth);
+
   const { getCommissionsThunk, deleteCommissionsThunk, actionDrawer } =
     useStoreActions((actions) => actions.fixedCommissions);
   const { getEmployeesThunk } = useStoreActions((actions) => actions.employees);
+  const { verifyThunk } = useStoreActions((actions) => actions.auth);
 
   const columns = [
     {
@@ -92,12 +95,18 @@ function FixedCommissions(props) {
   ];
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/permission-error");
+    if (Object.keys(verification).length === 0) {
+      verifyThunk();
     }
+    if (Object.keys(verification).length !== 0 && !verification["verified"]) {
+      navigate("/permission-error", {
+        state: { error: verification["reason"] },
+      });
+    }
+    
     getEmployeesThunk();
     getCommissionsThunk(filter);
-  }, [navigate, getEmployeesThunk, getCommissionsThunk, filter]);
+  }, [navigate, getEmployeesThunk, getCommissionsThunk, filter, verification]);
 
   const getData = () => {
     let _commissions = [];
