@@ -209,7 +209,7 @@ function Employee(props) {
   };
 
   const generateEmpId = () => {
-    let newEmp = `PIC/00${employeeCount + 1}`;
+    let newEmp = `PIC00${employeeCount + 1}`;
 
     return newEmp;
   };
