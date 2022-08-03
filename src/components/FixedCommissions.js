@@ -106,7 +106,7 @@ function FixedCommissions(props) {
     
     getEmployeesThunk();
     getCommissionsThunk(filter);
-  }, [navigate, getEmployeesThunk, getCommissionsThunk, filter]);
+  }, [navigate, getEmployeesThunk, getCommissionsThunk, filter, verification]);
 
   const getData = () => {
     let _commissions = [];
