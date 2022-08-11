@@ -24,8 +24,13 @@ function SideBar(props) {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+    <Layout>
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={onCollapse}
+        style={{ height: "100%", position: "fixed" }}
+      >
         <div className="logo" />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <Menu.Item key="1" icon={<HomeOutlined />}>
@@ -53,13 +58,8 @@ function SideBar(props) {
               <Link to="/salary-slips">Payslips</Link>
             </Menu.Item>
           </SubMenu>
+          <Menu.Divider />
           <Menu.Item
-            title=""
-            style={{
-              position: "absolute",
-              bottom: "48px",
-              zIndex: 1,
-            }}
             key="8"
             icon={<LogoutOutlined />}
             onClick={(e) => {
@@ -71,7 +71,7 @@ function SideBar(props) {
           </Menu.Item>
         </Menu>
       </Sider>
-      <Layout style={{ minHeight: "100vh" }}>
+      <Layout style={{ minHeight: "100vh", marginLeft: "200px" }}>
         <Content>
           <Outlet />
         </Content>

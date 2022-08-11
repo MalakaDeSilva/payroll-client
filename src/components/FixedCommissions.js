@@ -105,7 +105,7 @@ function FixedCommissions(props) {
     }
     
     getEmployeesThunk();
-    getCommissionsThunk(filter);
+    getCommissionsThunk(filter); // eslint-disable-next-line
   }, [navigate, getEmployeesThunk, getCommissionsThunk, filter, verification]);
 
   const getData = () => {
